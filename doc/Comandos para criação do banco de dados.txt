@@ -1,0 +1,19 @@
+CREATE DATABASE biourb;
+
+CREATE TABLE usuario (
+    id SERIAL PRIMARY KEY,
+    cpf VARCHAR(20) UNIQUE NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE arvore (
+    id SERIAL PRIMARY KEY,
+    nome_cientifico VARCHAR(255) NOT NULL,
+    data_plantio DATE NOT NULL,
+    estado_saude VARCHAR(255) NOT NULL,
+    localizacao TEXT NOT NULL,
+    usuario_id INT NOT NULL,
+    CONSTRAINT fk_arvore_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE
+);
