@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { FaUser, FaEnvelope, FaIdCard, FaLock } from "react-icons/fa";
+import { toast } from "react-toastify";
 import "./Login.css";
 
 const Register = () => {
@@ -18,7 +19,8 @@ const Register = () => {
     let cpf = e.target.value;
     cpf = cpf.replace(/\D/g, "");
     if (cpf.length <= 11) {
-      cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2")
+      cpf = cpf
+        .replace(/(\d{3})(\d)/, "$1.$2")
         .replace(/(\d{3})(\d)/, "$1.$2")
         .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     }
@@ -28,17 +30,22 @@ const Register = () => {
     }));
   };
 
-  const handleClickRegister = (e) => {
+  const handleClickRegister = async (e) => {
     e.preventDefault();
-    Axios.post("http://localhost:3001/register", {
-      cpf: values.cpf,
-      name: values.name,
-      email: values.email,
-      password: values.password,
-    }).then((response) => {
-      alert("Usuário cadastrado com sucesso! Redirecionando para o login...");
-      navigate("/");
-    });
+    try {
+      await Axios.post("http://localhost:3001/register", {
+        cpf: values.cpf,
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      });
+
+      toast.success("Usuário cadastrado com sucesso! Redirecionando...");
+      setTimeout(() => navigate("/"), 2000);
+    } catch (error) {
+      console.error("Erro ao registrar:", error);
+      toast.error("Erro ao registrar. Verifique os dados e tente novamente.");
+    }
   };
 
   const handleaddValues = (value) => {
@@ -104,7 +111,7 @@ const Register = () => {
         <button type="submit">Registrar</button>
         <div className="signup-link">
           <p>
-            Já tem uma conta? <a href="/">Entrar</a>{" "}
+            Já tem uma conta? <a href="/">Entrar</a>
           </p>
         </div>
       </form>

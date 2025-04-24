@@ -89,8 +89,6 @@ app.post("/login", async (req, res) => {
 app.post("/trees", async (req, res) => {
     const { treeName, lifecondition, location, plantingDate, usuario_id } = req.body;
 
-    console.log('Dados recebidos:', req.body); // Log dos dados recebidos
-
     if (!usuario_id || !treeName || !lifecondition || !location || !plantingDate) {
         return res.status(400).json({ msg: "Por favor, forneça todos os campos necessários." });
     }
@@ -101,7 +99,6 @@ app.post("/trees", async (req, res) => {
              VALUES ($1, $2, $3, $4, $5) RETURNING id`,
             [treeName, plantingDate, lifecondition, location, usuario_id]
         );
-        console.log('Árvore registrada com sucesso:', result); // Log de sucesso
         res.status(201).json({ msg: "Árvore registrada com sucesso!", insertedId: result.rows[0].id });
     } catch (err) {
         console.error("Erro ao registrar árvore:", err); // Log de erro
