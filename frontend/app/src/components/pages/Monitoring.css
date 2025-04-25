@@ -292,3 +292,12 @@ td button:disabled {
   align-items: center;
   gap: 8px;
 }
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #177214;
+  font-size: 20px;
+}

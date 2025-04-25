@@ -3,8 +3,11 @@ import axios from 'axios';
 import './Monitoring.css';
 import { FaLock } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
+import { FaUser, FaTree, FaCalendarAlt, FaHeartbeat, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 
 const Monitoring = () => {
+    const [showLocationModal, setShowLocationModal] = useState(false);
+    const [selectedLocation, setSelectedLocation] = useState('');
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [showSuccessDelete, setShowSuccessDelete] = useState(false);
     const [showSuccessEdit, setShowSuccessEdit] = useState(false);
@@ -81,16 +84,19 @@ const Monitoring = () => {
 
 
     const handleEditClick = (tree) => {
+        const formattedDate = new Date(tree.data_plantio).toISOString().split('T')[0]; // yyyy-mm-dd
+
         setEditing(true);
         setCurrentTree({
             id: tree.id,
             nome_registrante: tree.nome_registrante,
             nome_cientifico: tree.nome_cientifico,
-            data_plantio: tree.data_plantio,
+            data_plantio: formattedDate,
             estado_saude: tree.estado_saude,
             localizacao: tree.localizacao
         });
     };
+
 
     const handleDeleteTree = async (id) => {
         try {
@@ -134,10 +140,15 @@ const Monitoring = () => {
             });
             setEditing(false);
             fetchTrees();
-            setShowSuccessEdit(true); // 👈 Adiciona isso para aparecer pop-up de edição
+            setShowSuccessEdit(true);
         } catch (error) {
             console.error("Erro ao atualizar árvore:", error);
         }
+    };
+
+    const truncateLocation = (location, maxLength = 25) => {
+        if (!location) return '';
+        return location.length > maxLength ? location.substring(0, maxLength) + '...' : location;
     };
 
 
@@ -158,6 +169,7 @@ const Monitoring = () => {
                 <form className="edit-form" onSubmit={handleUpdateSubmit}>
                     <h2>Editar Árvore</h2>
                     <div className="input-field">
+                        <FaUser className="input-icon" />
                         <input
                             type="text"
                             name="nome_registrante"
@@ -168,6 +180,7 @@ const Monitoring = () => {
                         />
                     </div>
                     <div className="input-field">
+                        <FaTree className="input-icon" />
                         <input
                             type="text"
                             name="nome_cientifico"
@@ -177,6 +190,7 @@ const Monitoring = () => {
                         />
                     </div>
                     <div className="input-field">
+                        <FaCalendarAlt className="input-icon" />
                         <input
                             type="date"
                             name="data_plantio"
@@ -185,6 +199,7 @@ const Monitoring = () => {
                         />
                     </div>
                     <div className="input-field">
+                        <FaHeartbeat className="input-icon" />
                         <select
                             name="estado_saude"
                             value={currentTree.estado_saude}
@@ -197,12 +212,18 @@ const Monitoring = () => {
                         </select>
                     </div>
                     <div className="input-field">
-                        <input
-                            type="text"
+                        <FaMapMarkerAlt className="input-icon" style={{ position: 'absolute', top: '20px', left: '10px', color: '#555' }} />
+                        <textarea
                             name="localizacao"
                             value={currentTree.localizacao}
                             onChange={handleInputChange}
                             placeholder="Localização"
+                            rows={4}
+                            style={{
+                                width: '100%',
+                                padding: '10px 10px 10px 40px',
+                                color: '#155802',
+                            }}
                         />
                     </div>
                     <button className="update" type="submit">Atualizar Árvore</button>
@@ -229,7 +250,45 @@ const Monitoring = () => {
                                 <td>{tree.nome_cientifico}</td>
                                 <td>{formatDate(tree.data_plantio)}</td>
                                 <td>{tree.estado_saude}</td>
-                                <td>{tree.localizacao}</td>
+                                <td
+                                    onClick={() => {
+                                        if (tree.localizacao.length > 25) {
+                                            setSelectedLocation(tree.localizacao);
+                                            setShowLocationModal(true);
+                                        }
+                                    }}
+                                    style={{
+                                        cursor: tree.localizacao.length > 25 ? 'pointer' : 'default',
+                                        color: 'inherit',
+                                        padding: '8px 12px',
+                                    }}
+                                >
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        maxWidth: '180px',
+                                    }}>
+                                        <span style={{
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap',
+                                            display: 'inline-block',
+                                            verticalAlign: 'middle',
+                                        }}>
+                                            {tree.localizacao}
+                                        </span>
+                                        {tree.localizacao.length > 25 && (
+                                            <FaSearch size={12} style={{ color: 'inherit', flexShrink: 0 }} />
+                                        )}
+                                    </div>
+                                </td>
+
+
+
                                 <td>
                                     {tree.usuario_id === user.id || user.id === 1 ? (
                                         <>
@@ -298,6 +357,20 @@ const Monitoring = () => {
                     <div className="action-success-message">
                         <h2>Árvore editada com sucesso!</h2>
                         <button onClick={() => setShowSuccessEdit(false)}>Fechar</button>
+                    </div>
+                </div>
+            )}
+
+            {showLocationModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h2>Localização Completa</h2>
+                        <p style={{ wordBreak: 'break-word' }}>{selectedLocation}</p>
+                        <div className="modal-actions">
+                            <button className="cancel-button" onClick={() => setShowLocationModal(false)}>
+                                Fechar
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

@@ -16,13 +16,13 @@ function Footer() {
           </a>
         </li>
         <li>
-          <a href="https://github.com/Viniglienke/arborizacao_urbana_PE" target="_blank" rel="noopener noreferrer" className={styles.icon}>
+          <a href="https://github.com/Viniglienke/Projeto_Integrador" target="_blank" rel="noopener noreferrer" className={styles.icon}>
             <FaGithub />
           </a>
         </li>
       </ul>
       <p className={styles.copy_right}>
-        <span>BioUrb</span> &copy; 2024
+        <span>BioUrb</span> &copy; 2025
       </p>
     </footer>
   );
