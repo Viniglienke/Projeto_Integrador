@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const { Pool } = require("pg");
@@ -8,15 +9,14 @@ const jwt = require("jsonwebtoken");
 
 // Configuração do banco de dados PostgreSQL
 const db = new Pool({
-    host: "localhost",
-    user: "postgres",
-    password: "vinici88",
-    database: "biourb",
-    port: 5432,
-    ssl: false,
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false }
 });
 
-app.use(cors());
+app.use(cors({
+    origin: "https://biourb.vercel.app/",
+    credentials: true
+}));
 app.use(express.json());
 
 // Conectar ao banco de dados
@@ -63,7 +63,8 @@ app.post("/login", async (req, res) => {
 
         if (isPasswordValid) {
             const jwt = require("jsonwebtoken");
-            const token = jwt.sign({ userId: user.id }, "secret-key", { expiresIn: "1h" });
+            const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
 
             res.json({
                 msg: "Usuário logado",

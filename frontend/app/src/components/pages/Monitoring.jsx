@@ -34,7 +34,7 @@ const Monitoring = () => {
 
     const fetchTrees = async () => {
         try {
-            const response = await axios.get('http://localhost:3001/trees');
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/trees`);
             setTrees(response.data);
         } catch (error) {
             console.error("Erro ao buscar árvores:", error);
@@ -101,7 +101,7 @@ const Monitoring = () => {
     const handleDeleteTree = async (id) => {
         try {
             setLoadingDelete(true);
-            await axios.delete(`http://localhost:3001/trees/${id}`);
+            await axios.delete(`${process.env.REACT_APP_API_URL}/trees/${id}`);
             fetchTrees();
             setShowSuccessDelete(true);
         } catch (error) {
@@ -132,7 +132,7 @@ const Monitoring = () => {
     const handleUpdateSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:3001/trees/${currentTree.id}`, {
+            await axios.put(`${process.env.REACT_APP_API_URL}/trees/${currentTree.id}`, {
                 treeName: currentTree.nome_cientifico,
                 plantingDate: currentTree.data_plantio,
                 lifecondition: currentTree.estado_saude,

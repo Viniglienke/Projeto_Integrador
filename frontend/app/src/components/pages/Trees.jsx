@@ -38,7 +38,7 @@ const Trees = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        Axios.post("http://localhost:3001/trees", {
+        Axios.post(`${process.env.REACT_APP_API_URL}/trees`, {
             usuName: values.usuName,
             treeName: values.treeName,
             plantingDate: values.plantingDate,
