@@ -33,7 +33,7 @@ const Register = () => {
   const handleClickRegister = async (e) => {
     e.preventDefault();
     try {
-      Axios.post(`${process.env.REACT_APP_API_URL}/register`, {
+      await Axios.post(`${process.env.REACT_APP_API_URL}/register`, {
         cpf: values.cpf,
         name: values.name,
         email: values.email,
@@ -47,6 +47,7 @@ const Register = () => {
       toast.error("Erro ao registrar. Verifique os dados e tente novamente.");
     }
   };
+
 
   const handleaddValues = (value) => {
     setValues((prevValues) => ({
