@@ -14,7 +14,7 @@ const db = new Pool({
 });
 
 app.use(cors({
-    origin: "https://biourb.vercel.app/",
+    origin: "https://biourb.vercel.app",
     credentials: true
 }));
 app.use(express.json());
