@@ -205,7 +205,7 @@ const Monitoring = () => {
                             value={currentTree.estado_saude}
                             onChange={handleInputChange}
                         >
-                            <option value="" disabled>Sáude da Árvore</option>
+                            <option value="" disabled>Saúde da Árvore</option>
                             <option value="Saudável">Saudável</option>
                             <option value="Doente">Doente</option>
                             <option value="Morrendo">Morrendo</option>
