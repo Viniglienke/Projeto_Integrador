@@ -33,25 +33,18 @@ const Register = () => {
   const handleClickRegister = async (e) => {
     e.preventDefault();
     try {
-      console.log("URL da API:", process.env.REACT_APP_API_URL);
-      Axios.post(`${process.env.REACT_APP_API_URL}/register`, {
+      const response = await Axios.post(`${process.env.REACT_APP_API_URL}/register`, {
         cpf: values.cpf,
         name: values.name,
         email: values.email,
         password: values.password,
       });
 
-      await Axios.post(`${process.env.REACT_APP_API_URL}/register`, {
-        cpf: values.cpf,
-        name: values.name,
-        email: values.email,
-        password: values.password,
-      });
-
+      console.log("✅ Cadastro realizado:", response.data);
       toast.success("Usuário cadastrado com sucesso! Redirecionando...");
       setTimeout(() => navigate("/"), 2000);
     } catch (error) {
-      console.error("Erro ao registrar:", error);
+      console.error("🔥 Erro ao registrar:", error.response?.data || error.message);
       toast.error("Erro ao registrar. Verifique os dados e tente novamente.");
     }
   };
