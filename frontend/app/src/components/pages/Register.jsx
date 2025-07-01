@@ -33,6 +33,14 @@ const Register = () => {
   const handleClickRegister = async (e) => {
     e.preventDefault();
     try {
+      console.log("URL da API:", process.env.REACT_APP_API_URL);
+      Axios.post(`${process.env.REACT_APP_API_URL}/register`, {
+        cpf: values.cpf,
+        name: values.name,
+        email: values.email,
+        password: values.password,
+      });
+
       await Axios.post(`${process.env.REACT_APP_API_URL}/register`, {
         cpf: values.cpf,
         name: values.name,
