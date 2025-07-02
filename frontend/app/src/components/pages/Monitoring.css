@@ -232,9 +232,7 @@ td button:disabled {
 
 .delete-success-message {
   background: #f8d7da;
-  /* vermelho claro */
   color: #721c24;
-  /* vermelho escuro para o texto */
   padding: 30px 40px;
   border-radius: 12px;
   text-align: center;
@@ -249,7 +247,6 @@ td button:disabled {
 
 .delete-success-message button {
   background: #721c24;
-  /* vermelho escuro no botão */
   color: #ffffff;
   padding: 10px 20px;
   border-radius: 8px;
@@ -261,7 +258,6 @@ td button:disabled {
 
 .delete-success-message button:hover {
   background: #5a121b;
-  /* vermelho ainda mais escuro no hover */
 }
 
 /* Responsividade */
