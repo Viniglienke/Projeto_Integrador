@@ -17,6 +17,92 @@
   color: #333333;
 }
 
+.edit-form {
+  max-width: 600px;
+  margin: 70px auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit-form .input-field {
+  position: relative;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.edit-form input,
+.edit-form select,
+.edit-form textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  padding-left: 40px;
+}
+
+.edit-form select {
+  font-size: 17px;
+  text-align: justify;
+  color: #155802;
+  background-color: #f0f0f0;
+}
+
+.edit-form input:focus,
+.edit-form select:focus,
+.edit-form textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+.edit-form .update,
+.edit-form .cancel-button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #177214;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 10px 5px;
+}
+
+.edit-form .cancel-button {
+  background-color: #ccc;
+  color: #333;
+}
+
+.edit-form .update:hover {
+  background-color: #0056b3;
+}
+
+.edit-form .cancel-button:hover {
+  background-color: #b0b0b0;
+}
+
+.edit-form .input-icon {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #177214;
+  font-size: 20px;
+}
+
+.edit-form textarea {
+  padding: 10px 10px 10px 40px;
+  color: #155802;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -96,16 +182,6 @@ td .report-button:hover {
   color: #ffffff;
 }
 
-/* Botões de cancelamento e envio no modal */
-.cancel-button {
-  background-color: #ccc;
-  color: #333;
-}
-
-.cancel-button:hover {
-  background-color: #b0b0b0;
-}
-
 .send-button {
   background-color: #FFA500;
   color: white;
@@ -121,7 +197,15 @@ td button:disabled {
   cursor: not-allowed;
 }
 
-/* Modal */
+.cancel-button {
+  background-color: #ccc;
+  color: #333;
+}
+
+.cancel-button:hover {
+  background-color: #b0b0b0;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -169,7 +253,6 @@ td button:disabled {
   gap: 15px;
 }
 
-/* Mensagens de sucesso */
 .success-overlay,
 .action-success-overlay {
   position: fixed;
@@ -260,29 +343,6 @@ td button:disabled {
   background: #5a121b;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-
-  th,
-  td {
-    font-size: 14px;
-    padding: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .monitoring-container {
-    padding: 10px;
-  }
-
-  th,
-  td {
-    font-size: 12px;
-    padding: 6px;
-  }
-}
-
-/* Ações somente leitura */
 .readonly-actions {
   display: flex;
   align-items: center;
@@ -296,4 +356,43 @@ td button:disabled {
   transform: translateY(-50%);
   color: #177214;
   font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  .edit-form {
+    margin: 50px auto;
+    padding: 15px;
+  }
+
+  .edit-form .update,
+  .edit-form .cancel-button {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  th,
+  td {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-form {
+    width: 90%;
+    margin: 20px auto;
+    padding: 10px;
+  }
+
+  .edit-form .update,
+  .edit-form .cancel-button {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  th,
+  td {
+    font-size: 12px;
+    padding: 6px;
+  }
 }
