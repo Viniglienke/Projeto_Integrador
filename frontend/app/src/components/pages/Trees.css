@@ -30,11 +30,11 @@
   padding: 10px;
   font-size: 16px;
   border: 1px solid #000000;
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 .input-field select {
-  font-size: 17px;
+  font-size: 14px;
   text-align: justify;
   color: #155802;
   background-color: #f0f0f0;
