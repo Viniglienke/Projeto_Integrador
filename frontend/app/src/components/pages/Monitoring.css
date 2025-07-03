@@ -311,10 +311,8 @@ td button:disabled {
 .edit-form {
   width: 100%;
   max-width: 500px;
-  background-color: #fdfdfd;
   padding: 30px 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
 }
 
@@ -332,4 +330,36 @@ td button:disabled {
   border: 1px solid #ccc;
   font-size: 1rem;
   box-sizing: border-box;
+}
+
+.edit-form button {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px 20px;
+  margin: 10px auto;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: block;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.edit-form .update {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.edit-form .update:hover {
+  background-color: #45a049;
+}
+
+.edit-form .cancel-button {
+  background-color: #ccc;
+  color: #333;
+}
+
+.edit-form .cancel-button:hover {
+  background-color: #b0b0b0;
 }
