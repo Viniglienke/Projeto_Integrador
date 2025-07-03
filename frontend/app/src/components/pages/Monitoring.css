@@ -111,6 +111,9 @@ td .report-button:hover {
 .send-button {
   background-color: #FFA500;
   color: white;
+  max-width: 300px;
+  width: 100%;
+  margin-bottom: 0;
 }
 
 .send-button:hover {
