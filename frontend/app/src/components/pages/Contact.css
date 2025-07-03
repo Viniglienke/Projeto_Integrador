@@ -60,7 +60,10 @@
 .input-field textarea {
   height: 100px;
   resize: vertical;
-  color: black;
+}
+
+.input-field text {
+  padding-left: 0;
 }
 
 button[type="submit"] {
