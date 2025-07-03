@@ -3,7 +3,7 @@
 }
 
 .contact-container {
-  display: flex;  
+  display: flex;
   flex-direction: column;
   max-width: 1200px;
   width: 100%;
@@ -40,7 +40,7 @@
   margin-bottom: 15px;
 }
 
-.input-field label{
+.input-field label {
   float: left;
 }
 
@@ -62,7 +62,8 @@
   resize: vertical;
 }
 
-.input-field text {
+.input-field input,
+.input-field textarea {
   padding-left: 0 !important;
 }
 
@@ -87,8 +88,9 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #45a049;
 }
+
 @media (max-width: 1200px) {
-  .contact-container{
+  .contact-container {
     max-width: 750px;
   }
 }
@@ -164,7 +166,7 @@ button[type="submit"]:hover {
 }
 
 .input-field textarea:focus {
-    outline: none;
-    border-color: #4caf50;
-    box-shadow: 0 0 5px #4caf5080;
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 5px #4caf5080;
 }
