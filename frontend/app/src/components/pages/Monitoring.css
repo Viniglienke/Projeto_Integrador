@@ -300,10 +300,36 @@ td button:disabled {
   font-size: 20px;
 }
 
-.edit-form {
-  text-align: center;
+.edit-mode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  padding: 0 15px;
 }
 
-.edit-mode {
-  margin-top: 50px;
+.edit-form {
+  width: 100%;
+  max-width: 500px;
+  background-color: #fdfdfd;
+  padding: 30px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+.input-field {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-field input,
+.input-field select,
+.input-field textarea {
+  width: 100%;
+  padding: 10px 10px 10px 40px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
 }
