@@ -304,7 +304,6 @@ td button:disabled {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
   padding: 0 15px;
 }
 
@@ -346,13 +345,24 @@ td button:disabled {
   transition: background-color 0.3s ease-in-out;
 }
 
-.edit-form .update {
-  background-color: #4CAF50;
-  color: white;
+.edit-form button.update[type="submit"] {
+  background-color: #4CAF50 !important;
+  color: #fff !important;
+  border: none;
+  padding: 12px 20px;
+  width: 100%;
+  max-width: 300px;
+  margin: 10px auto;
+  display: block;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.edit-form .update:hover {
-  background-color: #45a049;
+.edit-form button.update[type="submit"]:hover {
+  background-color: #45a049 !important;
 }
 
 .edit-form .cancel-button {
