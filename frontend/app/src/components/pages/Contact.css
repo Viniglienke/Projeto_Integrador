@@ -62,9 +62,9 @@
   resize: vertical;
 }
 
-.input-field input,
-.input-field textarea {
-  padding-left: 0 !important;
+.contact-container .input-field input,
+.contact-container .input-field textarea {
+  padding-left: 0;
 }
 
 button[type="submit"] {
