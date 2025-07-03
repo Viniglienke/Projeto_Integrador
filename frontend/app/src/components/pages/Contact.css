@@ -63,7 +63,7 @@
 }
 
 .input-field text {
-  padding-left: 0;
+  padding-left: 0 !important;
 }
 
 button[type="submit"] {
@@ -161,4 +161,10 @@ button[type="submit"]:hover {
   .contact-header .logo {
     max-width: 100px;
   }
+}
+
+.input-field textarea:focus {
+    outline: none;
+    border-color: #4caf50;
+    box-shadow: 0 0 5px #4caf5080;
 }
