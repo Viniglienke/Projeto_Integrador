@@ -64,7 +64,7 @@
 
 .contact-container .input-field input,
 .contact-container .input-field textarea {
-  padding-left: 0;
+  padding-left: 15px;
 }
 
 button[type="submit"] {
