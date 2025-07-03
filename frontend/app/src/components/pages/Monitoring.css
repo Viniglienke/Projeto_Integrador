@@ -1,5 +1,4 @@
 .monitoring-container {
-  width: 90%;
   max-width: 1200px;
   margin: 50px auto;
   padding: 20px;
@@ -100,6 +99,9 @@ td .report-button:hover {
 .cancel-button {
   background-color: #ccc;
   color: #333;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 0px;
 }
 
 .cancel-button:hover {
@@ -299,12 +301,7 @@ td button:disabled {
 }
 
 .edit-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
   text-align: center;
-  background: none;
-  box-shadow: none;
   padding: 0;
 }
 
