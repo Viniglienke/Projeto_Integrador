@@ -166,7 +166,7 @@ const Monitoring = () => {
         <div className="monitoring-container">
             <h1 className='monitoring-title'>Monitoramento de Árvores</h1>
             {editing ? (
-                <div className="container">
+                <div className="edit-mode">
                     <form className="edit-form" onSubmit={handleUpdateSubmit}>
                         <h2>Editar Árvore</h2>
                         <div className="input-field">
@@ -230,155 +230,155 @@ const Monitoring = () => {
                         <button className="update" type="submit">Atualizar Árvore</button>
                         <button className="cancel-button" onClick={() => setEditing(false)}>Cancelar</button>
                     </form>
-                    </div>
-                    ) : (
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Usuário</th>
-                                <th>Nome Científico</th>
-                                <th>Data de Plantio</th>
-                                <th>Estado de Saúde</th>
-                                <th>Localização</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {trees.map(tree => (
-                                <tr key={tree.id}>
-                                    <td>{tree.id}</td>
-                                    <td>{tree.nome_registrante}</td>
-                                    <td>{tree.nome_cientifico}</td>
-                                    <td>{formatDate(tree.data_plantio)}</td>
-                                    <td>{tree.estado_saude}</td>
-                                    <td
-                                        onClick={() => {
-                                            if (tree.localizacao.length > 25) {
-                                                setSelectedLocation(tree.localizacao);
-                                                setShowLocationModal(true);
-                                            }
-                                        }}
-                                        style={{
-                                            cursor: tree.localizacao.length > 25 ? 'pointer' : 'default',
-                                            color: 'inherit',
-                                            padding: '8px 12px',
-                                        }}
-                                    >
-                                        <div style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '4px',
-                                            whiteSpace: 'nowrap',
+                </div>
+            ) : (
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Usuário</th>
+                            <th>Nome Científico</th>
+                            <th>Data de Plantio</th>
+                            <th>Estado de Saúde</th>
+                            <th>Localização</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {trees.map(tree => (
+                            <tr key={tree.id}>
+                                <td>{tree.id}</td>
+                                <td>{tree.nome_registrante}</td>
+                                <td>{tree.nome_cientifico}</td>
+                                <td>{formatDate(tree.data_plantio)}</td>
+                                <td>{tree.estado_saude}</td>
+                                <td
+                                    onClick={() => {
+                                        if (tree.localizacao.length > 25) {
+                                            setSelectedLocation(tree.localizacao);
+                                            setShowLocationModal(true);
+                                        }
+                                    }}
+                                    style={{
+                                        cursor: tree.localizacao.length > 25 ? 'pointer' : 'default',
+                                        color: 'inherit',
+                                        padding: '8px 12px',
+                                    }}
+                                >
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        maxWidth: '180px',
+                                    }}>
+                                        <span style={{
                                             overflow: 'hidden',
                                             textOverflow: 'ellipsis',
-                                            maxWidth: '180px',
+                                            whiteSpace: 'nowrap',
+                                            display: 'inline-block',
+                                            verticalAlign: 'middle',
                                         }}>
-                                            <span style={{
-                                                overflow: 'hidden',
-                                                textOverflow: 'ellipsis',
-                                                whiteSpace: 'nowrap',
-                                                display: 'inline-block',
-                                                verticalAlign: 'middle',
-                                            }}>
-                                                {tree.localizacao}
-                                            </span>
-                                            {tree.localizacao.length > 25 && (
-                                                <FaSearch size={12} style={{ color: 'inherit', flexShrink: 0 }} />
-                                            )}
-                                        </div>
-                                    </td>
-
-
-
-                                    <td>
-                                        {tree.usuario_id === user.id || user.id === 1 ? (
-                                            <>
-                                                <button onClick={() => handleEditClick(tree)}>Editar</button>
-                                                <button
-                                                    className="delete-button" onClick={() => handleDeleteTree(tree.id)} disabled={loadingDelete}
-                                                >
-                                                    {loadingDelete ? "Excluindo..." : "Excluir"}
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <div className="readonly-actions">
-                                                <FaLock title="Você não pode editar ou excluir esta árvore" style={{ color: 'gray', marginRight: '8px' }} />
-                                                <button className="report-button" onClick={() => handleReportClick(tree.id)}>Reportar problema</button>
-                                            </div>
+                                            {tree.localizacao}
+                                        </span>
+                                        {tree.localizacao.length > 25 && (
+                                            <FaSearch size={12} style={{ color: 'inherit', flexShrink: 0 }} />
                                         )}
-                                    </td>
+                                    </div>
+                                </td>
 
 
 
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                <td>
+                                    {tree.usuario_id === user.id || user.id === 1 ? (
+                                        <>
+                                            <button onClick={() => handleEditClick(tree)}>Editar</button>
+                                            <button
+                                                className="delete-button" onClick={() => handleDeleteTree(tree.id)} disabled={loadingDelete}
+                                            >
+                                                {loadingDelete ? "Excluindo..." : "Excluir"}
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <div className="readonly-actions">
+                                            <FaLock title="Você não pode editar ou excluir esta árvore" style={{ color: 'gray', marginRight: '8px' }} />
+                                            <button className="report-button" onClick={() => handleReportClick(tree.id)}>Reportar problema</button>
+                                        </div>
+                                    )}
+                                </td>
+
+
+
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             )}
-                    {showReportModal && (
-                        <div className="modal-overlay">
-                            <div className="modal-content">
-                                <h2>Reportar Problema</h2>
-                                <textarea
-                                    value={reportText}
-                                    onChange={(e) => setReportText(e.target.value)}
-                                    placeholder="Descreva o problema encontrado..."
-                                />
-                                <div className="modal-actions">
-                                    <button className="send-button" onClick={handleSendReport} disabled={loading}>
-                                        {loading ? "Enviando..." : "Enviar"}
-                                    </button>
-                                    <button className="cancel-button" onClick={handleCloseModal}>Cancelar</button>
-                                </div>
-                            </div>
+            {showReportModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h2>Reportar Problema</h2>
+                        <textarea
+                            value={reportText}
+                            onChange={(e) => setReportText(e.target.value)}
+                            placeholder="Descreva o problema encontrado..."
+                        />
+                        <div className="modal-actions">
+                            <button className="send-button" onClick={handleSendReport} disabled={loading}>
+                                {loading ? "Enviando..." : "Enviar"}
+                            </button>
+                            <button className="cancel-button" onClick={handleCloseModal}>Cancelar</button>
                         </div>
-                    )}
-
-                    {successMessage && (
-                        <div className="success-overlay">
-                            <div className="success-message">
-                                <h2>✅ {successMessage}</h2>
-                                <button onClick={() => setSuccessMessage('')}>Fechar</button>
-                            </div>
-                        </div>
-                    )}
-
-                    {showSuccessDelete && (
-                        <div className="delete-success-overlay">
-                            <div className="delete-success-message">
-                                <h2>Árvore deletada com sucesso!</h2>
-                                <button onClick={() => setShowSuccessDelete(false)}>Fechar</button>
-                            </div>
-                        </div>
-
-                    )}
-
-                    {showSuccessEdit && (
-                        <div className="action-success-overlay">
-                            <div className="action-success-message">
-                                <h2>Árvore editada com sucesso!</h2>
-                                <button onClick={() => setShowSuccessEdit(false)}>Fechar</button>
-                            </div>
-                        </div>
-                    )}
-
-                    {showLocationModal && (
-                        <div className="modal-overlay">
-                            <div className="modal-content">
-                                <h2>Localização Completa</h2>
-                                <p style={{ wordBreak: 'break-word' }}>{selectedLocation}</p>
-                                <div className="modal-actions">
-                                    <button className="cancel-button" onClick={() => setShowLocationModal(false)}>
-                                        Fechar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
+                    </div>
                 </div>
-            );
+            )}
+
+            {successMessage && (
+                <div className="success-overlay">
+                    <div className="success-message">
+                        <h2>✅ {successMessage}</h2>
+                        <button onClick={() => setSuccessMessage('')}>Fechar</button>
+                    </div>
+                </div>
+            )}
+
+            {showSuccessDelete && (
+                <div className="delete-success-overlay">
+                    <div className="delete-success-message">
+                        <h2>Árvore deletada com sucesso!</h2>
+                        <button onClick={() => setShowSuccessDelete(false)}>Fechar</button>
+                    </div>
+                </div>
+
+            )}
+
+            {showSuccessEdit && (
+                <div className="action-success-overlay">
+                    <div className="action-success-message">
+                        <h2>Árvore editada com sucesso!</h2>
+                        <button onClick={() => setShowSuccessEdit(false)}>Fechar</button>
+                    </div>
+                </div>
+            )}
+
+            {showLocationModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h2>Localização Completa</h2>
+                        <p style={{ wordBreak: 'break-word' }}>{selectedLocation}</p>
+                        <div className="modal-actions">
+                            <button className="cancel-button" onClick={() => setShowLocationModal(false)}>
+                                Fechar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+        </div>
+    );
 };
 
-            export default Monitoring;
+export default Monitoring;
