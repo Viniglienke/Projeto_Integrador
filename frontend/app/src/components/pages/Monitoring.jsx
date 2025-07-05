@@ -8,7 +8,7 @@ import { FaUser, FaTree, FaCalendarAlt, FaHeartbeat, FaMapMarkerAlt, FaSearch } 
 const Monitoring = () => {
     const [showLocationModal, setShowLocationModal] = useState(false);
     const [selectedLocation, setSelectedLocation] = useState('');
-    const [loadingDelete, setLoadingDelete] = useState(false);
+    const [loadingDeleteId, setLoadingDeleteId] = useState(null);
     const [showSuccessDelete, setShowSuccessDelete] = useState(false);
     const [showSuccessEdit, setShowSuccessEdit] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
@@ -100,14 +100,14 @@ const Monitoring = () => {
 
     const handleDeleteTree = async (id) => {
         try {
-            setLoadingDelete(true);
+            setLoadingDeleteId(id);
             await axios.delete(`${process.env.REACT_APP_API_URL}/trees/${id}`);
             fetchTrees();
             setShowSuccessDelete(true);
         } catch (error) {
             console.error('Erro ao excluir árvore', error);
         } finally {
-            setLoadingDelete(false);
+            setLoadingDeleteId(null);
         }
     };
 
@@ -296,9 +296,9 @@ const Monitoring = () => {
                                         <>
                                             <button onClick={() => handleEditClick(tree)}>Editar</button>
                                             <button
-                                                className="delete-button" onClick={() => handleDeleteTree(tree.id)} disabled={loadingDelete}
+                                                className="delete-button" onClick={() => handleDeleteTree(tree.id)} disabled={loadingDeleteId === tree.id}
                                             >
-                                                {loadingDelete ? "Excluindo..." : "Excluir"}
+                                                {loadingDeleteId === tree.id ? "Excluindo..." : "Excluir"}
                                             </button>
                                         </>
                                     ) : (
