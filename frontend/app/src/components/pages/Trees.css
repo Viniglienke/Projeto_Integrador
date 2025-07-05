@@ -170,3 +170,9 @@ button[type="submit"]:hover {
 .input-field textarea::placeholder {
   color: #155802;
 }
+
+.input-field textarea {
+  overflow: hidden;
+  resize: none;
+  transition: height 0.2s ease;
+}

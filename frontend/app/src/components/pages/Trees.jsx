@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { FaUser, FaTree, FaCalendarAlt, FaHeartbeat, FaMapMarkerAlt } from "react-icons/fa";
@@ -17,6 +17,8 @@ const Trees = () => {
     const navigate = useNavigate();
     const [usuarioId, setUsuarioId] = useState(null);
 
+    const locationRef = useRef(null);
+
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("@Auth:user"));
         if (user) {
@@ -28,11 +30,28 @@ const Trees = () => {
         }
     }, []);
 
+    // Ajusta a altura do textarea para o conteúdo
+    const adjustTextareaHeight = () => {
+        const el = locationRef.current;
+        if (el) {
+            el.style.height = "auto";
+            el.style.height = el.scrollHeight + "px";
+        }
+    };
+
+    useEffect(() => {
+        adjustTextareaHeight();
+    }, []);
+
     const handleChange = (e) => {
         setValues((prevValues) => ({
             ...prevValues,
             [e.target.name]: e.target.value
         }));
+
+        if (e.target.name === "location") {
+            adjustTextareaHeight();
+        }
     };
 
     const handleSubmit = (e) => {
@@ -125,36 +144,41 @@ const Trees = () => {
                     </div>
 
                     <div className="input-field">
-                        <FaMapMarkerAlt className="input-icon" style={{ position: 'absolute', top: '20px', left: '10px', color: '#555' }} />
+                        <FaMapMarkerAlt
+                            className="input-icon"
+                            style={{ position: 'absolute', top: '20px', left: '10px', color: '#555' }}
+                        />
                         <textarea
                             id="location"
                             name="location"
                             placeholder="Localização"
                             required
-                            rows={4}
+                            rows={1}
                             value={values.location}
                             onChange={handleChange}
+                            ref={locationRef}
                             style={{
                                 width: '100%',
                                 padding: '10px 10px 10px 40px',
                                 color: '#155802',
+                                overflow: 'hidden',
+                                resize: 'none'
                             }}
                         />
                     </div>
 
-
                     <button type="submit">Registrar Árvore</button>
                 </form>
             </div>
-            {
-                showSuccessPopup && (
-                    <div className="success-popup-overlay">
-                        <div className="success-popup">
-                            <h2>Árvore registrada com sucesso!</h2>
-                            <button onClick={handleClosePopup}>OK</button>
-                        </div>
-                    </div>)
-            }
+
+            {showSuccessPopup && (
+                <div className="success-popup-overlay">
+                    <div className="success-popup">
+                        <h2>Árvore registrada com sucesso!</h2>
+                        <button onClick={handleClosePopup}>OK</button>
+                    </div>
+                </div>
+            )}
         </>
     );
 };
