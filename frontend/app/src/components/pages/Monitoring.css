@@ -329,7 +329,6 @@ td button:disabled {
   width: 100%;
   padding: 10px 10px 10px 40px;
   border-radius: 6px;
-  border: 1px solid #ccc;
   font-size: 1rem;
   box-sizing: border-box;
 }
