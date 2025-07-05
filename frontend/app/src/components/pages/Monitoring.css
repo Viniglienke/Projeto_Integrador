@@ -275,7 +275,7 @@ td button:disabled {
   }
 
   .input-field select {
-    font-size: 4px !important;
+    font-size: 14px !important;
   }
 }
 
@@ -291,7 +291,7 @@ td button:disabled {
   }
 
   .input-field select {
-    font-size: 4px !important;
+    font-size: 12px !important;
   }
 }
 

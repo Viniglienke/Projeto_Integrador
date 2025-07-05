@@ -243,7 +243,7 @@ const Monitoring = () => {
                                 onChange={handleInputChange}
                                 placeholder="Localização"
                                 ref={locationEditRef}
-                                rows={2}
+                                rows={1.5}
                                 style={{
                                     width: '100%',
                                     padding: '10px 10px 10px 40px',
