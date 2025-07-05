@@ -89,7 +89,6 @@ const Monitoring = () => {
     };
 
 
-
     const handleEditClick = (tree) => {
         const formattedDate = new Date(tree.data_plantio).toISOString().split('T')[0]; // yyyy-mm-dd
 
@@ -234,7 +233,10 @@ const Monitoring = () => {
                             </select>
                         </div>
                         <div className="input-field">
-                            <FaMapMarkerAlt className="input-icon" style={{ position: 'absolute', top: '20px', left: '10px', color: '#555' }} />
+                            <FaMapMarkerAlt className="input-icon" style={{
+                                position: 'absolute', top: '50%', left: '10px', transform: 'translateY(-50%)', color: '#555'
+                            }}
+                            />
                             <textarea
                                 name="localizacao"
                                 value={currentTree.localizacao}
