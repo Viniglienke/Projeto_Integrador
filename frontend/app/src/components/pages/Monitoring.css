@@ -376,3 +376,7 @@ td button:disabled {
 .edit-form .cancel-button:hover {
   background-color: #b0b0b0;
 }
+
+.input-field textarea {
+  transition: height 0.2s ease;
+}

@@ -4,6 +4,7 @@ import './Monitoring.css';
 import { FaLock } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
 import { FaUser, FaTree, FaCalendarAlt, FaHeartbeat, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
+import { useRef } from 'react';
 
 const Monitoring = () => {
     const [showLocationModal, setShowLocationModal] = useState(false);
@@ -31,6 +32,12 @@ const Monitoring = () => {
     useEffect(() => {
         fetchTrees();
     }, []);
+
+    useEffect(() => {
+        if (editing) {
+            setTimeout(adjustEditTextareaHeight, 0);
+        }
+    }, [editing]);
 
     const fetchTrees = async () => {
         try {
@@ -122,12 +129,26 @@ const Monitoring = () => {
         )
     }
 
+    const locationEditRef = useRef(null);
+
+    const adjustEditTextareaHeight = () => {
+        const el = locationEditRef.current;
+        if (el) {
+            el.style.height = 'auto';
+            el.style.height = el.scrollHeight + 'px';
+        }
+    };
 
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setCurrentTree({ ...currentTree, [name]: value });
+        setCurrentTree(prev => ({ ...prev, [name]: value }));
+
+        if (name === "localizacao") {
+            adjustEditTextareaHeight();
+        }
     };
+
 
     const handleUpdateSubmit = async (e) => {
         e.preventDefault();
@@ -219,11 +240,14 @@ const Monitoring = () => {
                                 value={currentTree.localizacao}
                                 onChange={handleInputChange}
                                 placeholder="Localização"
-                                rows={4}
+                                ref={locationEditRef}
+                                rows={1}
                                 style={{
                                     width: '100%',
                                     padding: '10px 10px 10px 40px',
                                     color: '#155802',
+                                    overflow: 'hidden',
+                                    resize: 'none'
                                 }}
                             />
                         </div>
