@@ -166,3 +166,7 @@ button[type="submit"]:hover {
 .input-field select {
   padding-left: 40px;
 }
+
+.input-field textarea::placeholder {
+  color: #155802;
+}
