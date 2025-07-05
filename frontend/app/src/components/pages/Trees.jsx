@@ -153,7 +153,7 @@ const Trees = () => {
                             name="location"
                             placeholder="Localização"
                             required
-                            rows={1}
+                            rows={2}
                             value={values.location}
                             onChange={handleChange}
                             ref={locationRef}
