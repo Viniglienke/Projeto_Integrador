@@ -270,12 +270,12 @@ td button:disabled {
 
   th,
   td {
-    font-size: 16px;
+    font-size: 14px;
     padding: 8px;
   }
 
   .input-field select {
-    font-size: 14px;
+    font-size: 4px;
   }
 }
 
@@ -286,12 +286,12 @@ td button:disabled {
 
   th,
   td {
-    font-size: 14px;
+    font-size: 12px;
     padding: 6px;
   }
 
   .input-field select {
-    font-size: 12px;
+    font-size: 4px;
   }
 }
 
