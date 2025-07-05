@@ -125,17 +125,23 @@ const Trees = () => {
                     </div>
 
                     <div className="input-field">
-                        <FaMapMarkerAlt className="input-icon" />
-                        <input
-                            type="text"
-                            placeholder="Localização"
-                            required
+                        <FaMapMarkerAlt className="input-icon" style={{ position: 'absolute', top: '20px', left: '10px', color: '#555' }} />
+                        <textarea
                             id="location"
                             name="location"
+                            placeholder="Localização"
+                            required
+                            rows={4}
                             value={values.location}
                             onChange={handleChange}
+                            style={{
+                                width: '100%',
+                                padding: '10px 10px 10px 40px',
+                                color: '#155802',
+                            }}
                         />
                     </div>
+
 
                     <button type="submit">Registrar Árvore</button>
                 </form>
