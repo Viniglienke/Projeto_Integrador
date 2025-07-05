@@ -380,32 +380,3 @@ td button:disabled {
 .input-field textarea {
   transition: height 0.2s ease;
 }
-
-/* Estilização uniforme do select com seta customizada */
-.input-field select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-color: white;
-  border: 1px solid #ccc;
-  padding: 10px 40px 10px 40px;
-  border-radius: 6px;
-  color: #155802;
-  font-size: 1rem;
-  box-sizing: border-box;
-  position: relative;
-  z-index: 2;
-}
-
-/* Seta customizada */
-.input-field::after {
-  content: "▼";
-  font-size: 12px;
-  color: #555;
-  position: absolute;
-  right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  z-index: 1;
-}
