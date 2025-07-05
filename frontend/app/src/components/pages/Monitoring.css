@@ -273,6 +273,10 @@ td button:disabled {
     font-size: 14px;
     padding: 8px;
   }
+
+  .input-field select {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -284,6 +288,10 @@ td button:disabled {
   td {
     font-size: 12px;
     padding: 6px;
+  }
+
+  .input-field select {
+    font-size: 12px;
   }
 }
 
@@ -332,6 +340,8 @@ td button:disabled {
   border-radius: 6px;
   font-size: 1rem;
   box-sizing: border-box;
+  background-color: white !important;
+  box-shadow: none;
 }
 
 .edit-form button {
