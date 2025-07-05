@@ -46,8 +46,7 @@ const Trees = () => {
             location: values.location,
             usuario_id: usuarioId
         })
-            .then((response) => {
-                console.log(response.data);
+            .then(() => {
                 setShowSuccessPopup(true);
             })
             .catch((error) => {
