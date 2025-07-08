@@ -305,10 +305,11 @@ td button:disabled {
 .input-icon {
   position: absolute;
   top: 50%;
-  left: 10px;
   transform: translateY(-50%);
-  color: #177214;
+  left: 10px;
   font-size: 20px;
+  color: #177214;
+  pointer-events: none;
 }
 
 .edit-mode {
@@ -389,4 +390,12 @@ td button:disabled {
 
 .input-field textarea {
   transition: height 0.2s ease;
+}
+
+.input-field input[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-left: 40px;
+  height: 40px;
+  line-height: 1.5;
 }
