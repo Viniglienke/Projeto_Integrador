@@ -98,3 +98,8 @@ button[type="submit"] {
 .signup-link p a:hover {
   text-decoration: underline;
 }
+
+.cpf-error {
+  border: 2px solid red !important;
+  background-color: #ffe6e6;
+}

@@ -13,6 +13,7 @@ const Register = () => {
     password: ""
   });
 
+  const [cpfError, setCpfError] = useState(false);
   const navigate = useNavigate();
 
   const handleCPFChange = (e) => {
@@ -30,8 +31,38 @@ const Register = () => {
     }));
   };
 
+  const isValidCPF = (cpf) => {
+    const cleaned = cpf.replace(/[^\d]/g, "");
+
+    if (cleaned.length !== 11 || /^(\d)\1{10}$/.test(cleaned)) return false;
+
+    const digits = cleaned.split("").map(Number);
+
+    const firstCheck = digits
+      .slice(0, 9)
+      .reduce((sum, digit, index) => sum + digit * (10 - index), 0);
+    const firstDigit = (firstCheck * 10) % 11 % 10;
+
+    const secondCheck = digits
+      .slice(0, 10)
+      .reduce((sum, digit, index) => sum + digit * (11 - index), 0);
+    const secondDigit = (secondCheck * 10) % 11 % 10;
+
+    return firstDigit === digits[9] && secondDigit === digits[10];
+  };
+
+
   const handleClickRegister = async (e) => {
     e.preventDefault();
+
+    if (!isValidCPF(values.cpf)) {
+      setCpfError(true);
+      toast.error("CPF inválido. Por favor, insira um CPF válido.");
+      return;
+    }
+
+    setCpfError(false); // limpa o erro se CPF válido
+
     try {
       const response = await Axios.post(`${process.env.REACT_APP_API_URL}/register`, {
         cpf: values.cpf,
@@ -48,6 +79,7 @@ const Register = () => {
       toast.error("Erro ao registrar. Verifique os dados e tente novamente.");
     }
   };
+
 
 
   const handleaddValues = (value) => {
@@ -75,7 +107,7 @@ const Register = () => {
         </div>
         <div className="input-field">
           <input
-            type="text"
+            type="email"
             placeholder="E-mail"
             required
             id="email"
@@ -95,6 +127,7 @@ const Register = () => {
             value={values.cpf}
             onChange={handleCPFChange}
             maxLength={14}
+            className={cpfError ? "cpf-error" : ""}
           />
           <FaIdCard className="icon" />
         </div>

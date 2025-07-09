@@ -27,7 +27,7 @@ const Login = () => {
           <h1>BioUrb</h1>
           <div className="input-field">
             <input
-              type="text"
+              type="email"
               placeholder="E-mail"
               required
               value={email}
