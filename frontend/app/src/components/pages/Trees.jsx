@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
+import { format, isAfter, parseISO } from "date-fns";
 import { FaUser, FaTree, FaCalendarAlt, FaHeartbeat, FaMapMarkerAlt } from "react-icons/fa";
 import './Trees.css';
 
@@ -16,7 +17,6 @@ const Trees = () => {
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
     const navigate = useNavigate();
     const [usuarioId, setUsuarioId] = useState(null);
-
     const locationRef = useRef(null);
 
     useEffect(() => {
@@ -30,7 +30,6 @@ const Trees = () => {
         }
     }, []);
 
-    // Ajusta a altura do textarea para o conteúdo
     const adjustTextareaHeight = () => {
         const el = locationRef.current;
         if (el) {
@@ -57,27 +56,39 @@ const Trees = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        Axios.post(`${process.env.REACT_APP_API_URL}/trees`, {
-            usuName: values.usuName,
-            treeName: values.treeName,
-            plantingDate: values.plantingDate,
-            lifecondition: values.lifecondition,
-            location: values.location,
-            usuario_id: usuarioId
-        })
-            .then(() => {
-                setShowSuccessPopup(true);
+        try {
+            const dataSelecionada = parseISO(values.plantingDate);
+            const hoje = new Date();
+
+            if (isAfter(dataSelecionada, hoje)) {
+                alert("A data de plantio não pode ser no futuro.");
+                return;
+            }
+
+            Axios.post(`${process.env.REACT_APP_API_URL}/trees`, {
+                usuName: values.usuName,
+                treeName: values.treeName,
+                plantingDate: format(dataSelecionada, "yyyy-MM-dd"),
+                lifecondition: values.lifecondition,
+                location: values.location,
+                usuario_id: usuarioId
             })
-            .catch((error) => {
-                console.error("Erro ao registrar árvore:", error);
-                alert("Erro ao registrar árvore. Verifique o console para mais detalhes.");
-            });
+                .then(() => setShowSuccessPopup(true))
+                .catch((error) => {
+                    console.error("Erro ao registrar árvore:", error);
+                    alert("Erro ao registrar árvore. Verifique o console para mais detalhes.");
+                });
+        } catch (error) {
+            alert("Data inválida.");
+        }
     };
 
     const handleClosePopup = () => {
         setShowSuccessPopup(false);
         navigate("/monitoring");
     };
+
+    const maxDate = new Date().toISOString().split("T")[0]; // hoje em yyyy-MM-dd
 
     return (
         <>
@@ -115,15 +126,14 @@ const Trees = () => {
                     <div className="input-field">
                         <FaCalendarAlt className="input-icon" />
                         <input
-                            type="text"
+                            type="date"
                             placeholder="Data de Plantio"
-                            onFocus={(e) => (e.target.type = "date")}
-                            onBlur={(e) => (e.target.type = values.plantingDate ? "date" : "text")}
                             required
                             id="plantingDate"
                             name="plantingDate"
                             value={values.plantingDate}
                             onChange={handleChange}
+                            max={maxDate}
                         />
                     </div>
 
@@ -146,7 +156,13 @@ const Trees = () => {
                     <div className="input-field">
                         <FaMapMarkerAlt
                             className="input-icon"
-                            style={{ position: 'absolute', top: '40%', left: '10px', transform: 'translateY(-40%)', color: '#555' }}
+                            style={{
+                                position: 'absolute',
+                                top: '40%',
+                                left: '10px',
+                                transform: 'translateY(-40%)',
+                                color: '#555'
+                            }}
                         />
                         <textarea
                             id="location"

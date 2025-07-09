@@ -5,6 +5,7 @@ import { FaLock } from 'react-icons/fa';
 import emailjs from '@emailjs/browser';
 import { FaUser, FaTree, FaCalendarAlt, FaHeartbeat, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 import { useRef } from 'react';
+import { isAfter } from 'date-fns';
 
 const Monitoring = () => {
     const [showLocationModal, setShowLocationModal] = useState(false);
@@ -151,6 +152,15 @@ const Monitoring = () => {
 
     const handleUpdateSubmit = async (e) => {
         e.preventDefault();
+
+        const today = new Date();
+        const selectedDate = new Date(currentTree.data_plantio);
+
+        if (isAfter(selectedDate, today)) {
+            alert("A data de plantio não pode estar no futuro.");
+            return;
+        }
+
         try {
             await axios.put(`${process.env.REACT_APP_API_URL}/trees/${currentTree.id}`, {
                 treeName: currentTree.nome_cientifico,
@@ -165,6 +175,7 @@ const Monitoring = () => {
             console.error("Erro ao atualizar árvore:", error);
         }
     };
+
 
     const truncateLocation = (location, maxLength = 25) => {
         if (!location) return '';
