@@ -146,7 +146,7 @@ const Trees = () => {
                         <FaCalendarAlt className="input-icon" />
                         <input
                             type={dateInputType}
-                            placeholder="dd/mm/aaaa"
+                            placeholder="Data de Plantio"
                             required
                             id="plantingDate"
                             name="plantingDate"
