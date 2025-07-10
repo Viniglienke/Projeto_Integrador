@@ -177,20 +177,13 @@ const Trees = () => {
                     <div className="input-field">
                         <FaMapMarkerAlt
                             className="input-icon"
-                            style={{
-                                position: 'absolute',
-                                top: '40%',
-                                left: '10px',
-                                transform: 'translateY(-40%)',
-                                color: '#555'
-                            }}
                         />
                         <textarea
                             id="location"
                             name="location"
                             placeholder="Localização"
                             required
-                            rows={1.5}
+                            rows={1}
                             value={values.location}
                             onChange={handleChange}
                             ref={locationRef}
