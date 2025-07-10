@@ -257,7 +257,7 @@ const Monitoring = () => {
                                 rows={1.5}
                                 style={{
                                     width: '100%',
-                                    padding: '10px 10px 10px 40px',
+                                    padding: '10px 15px 10px 40px',
                                     color: '#155802',
                                     overflow: 'hidden',
                                     resize: 'none'
