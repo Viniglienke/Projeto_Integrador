@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
+import { FaUser, FaTree, FaCalendarAlt, FaHeartbeat, FaMapMarkerAlt } from "react-icons/fa";
 import { format, isAfter, parseISO, isValid } from "date-fns";
 import './Trees.css';
 
@@ -68,7 +69,6 @@ const Trees = () => {
         e.preventDefault();
 
         try {
-            // Tenta parsear a data inserida
             const dataSelecionada = parseISO(values.plantingDate);
             const hoje = new Date();
 
