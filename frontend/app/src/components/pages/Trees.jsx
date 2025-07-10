@@ -19,6 +19,9 @@ const Trees = () => {
     const [usuarioId, setUsuarioId] = useState(null);
     const locationRef = useRef(null);
 
+    // Adicione um novo estado para controlar o tipo do input de data
+    const [dateInputType, setDateInputType] = useState("text");
+
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("@Auth:user"));
         if (user) {
@@ -50,6 +53,18 @@ const Trees = () => {
 
         if (e.target.name === "location") {
             adjustTextareaHeight();
+        }
+    };
+
+    // Função para mudar o tipo do input para "date" quando focado
+    const handleFocusDate = () => {
+        setDateInputType("date");
+    };
+
+    // Função para mudar o tipo do input de volta para "text" se ele estiver vazio quando desfocado
+    const handleBlurDate = () => {
+        if (!values.plantingDate) {
+            setDateInputType("text");
         }
     };
 
@@ -88,7 +103,7 @@ const Trees = () => {
         navigate("/monitoring");
     };
 
-    const maxDate = new Date().toISOString().split("T")[0]; // hoje em yyyy-MM-dd
+    const maxDate = new Date().toISOString().split("T")[0]; // hoje em YYYY-MM-dd
 
     return (
         <>
@@ -126,14 +141,17 @@ const Trees = () => {
                     <div className="input-field">
                         <FaCalendarAlt className="input-icon" />
                         <input
-                            type="date"
-                            placeholder="Data de Plantio"
+                            // Altere o tipo para o estado `dateInputType`
+                            type={dateInputType}
+                            placeholder="Data de Plantio" {/* Defina o placeholder desejado */}
                             required
                             id="plantingDate"
                             name="plantingDate"
                             value={values.plantingDate}
                             onChange={handleChange}
                             max={maxDate}
+                            onFocus={handleFocusDate} {/* Adicione o onFocus */}
+                            onBlur={handleBlurDate}   {/* Adicione o onBlur */}
                         />
                     </div>
 
