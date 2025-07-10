@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
-import { format, isAfter, parseISO } from "date-fns";
-import { FaUser, FaTree, FaCalendarAlt, FaHeartbeat, FaMapMarkerAlt } from "react-icons/fa";
+import { format, isAfter, parseISO, isValid } from "date-fns";
 import './Trees.css';
 
 const Trees = () => {
@@ -19,7 +18,6 @@ const Trees = () => {
     const [usuarioId, setUsuarioId] = useState(null);
     const locationRef = useRef(null);
 
-    // Adicione um novo estado para controlar o tipo do input de data
     const [dateInputType, setDateInputType] = useState("text");
 
     useEffect(() => {
@@ -56,12 +54,10 @@ const Trees = () => {
         }
     };
 
-    // Função para mudar o tipo do input para "date" quando focado
     const handleFocusDate = () => {
         setDateInputType("date");
     };
 
-    // Função para mudar o tipo do input de volta para "text" se ele estiver vazio quando desfocado
     const handleBlurDate = () => {
         if (!values.plantingDate) {
             setDateInputType("text");
@@ -72,9 +68,15 @@ const Trees = () => {
         e.preventDefault();
 
         try {
+            // Tenta parsear a data inserida
             const dataSelecionada = parseISO(values.plantingDate);
             const hoje = new Date();
 
+            // Verifica se a data é válida e se não está no futuro
+            if (!isValid(dataSelecionada)) {
+                alert("Por favor, insira uma data de plantio válida no formato DD-MM-AAAA.");
+                return;
+            }
             if (isAfter(dataSelecionada, hoje)) {
                 alert("A data de plantio não pode ser no futuro.");
                 return;
@@ -83,6 +85,7 @@ const Trees = () => {
             Axios.post(`${process.env.REACT_APP_API_URL}/trees`, {
                 usuName: values.usuName,
                 treeName: values.treeName,
+                // Garante que a data seja formatada corretamente para o backend
                 plantingDate: format(dataSelecionada, "yyyy-MM-dd"),
                 lifecondition: values.lifecondition,
                 location: values.location,
@@ -94,7 +97,8 @@ const Trees = () => {
                     alert("Erro ao registrar árvore. Verifique o console para mais detalhes.");
                 });
         } catch (error) {
-            alert("Data inválida.");
+            alert("Erro inesperado ao processar a data.");
+            console.error("Erro no try-catch do handleSubmit:", error);
         }
     };
 
@@ -103,7 +107,7 @@ const Trees = () => {
         navigate("/monitoring");
     };
 
-    const maxDate = new Date().toISOString().split("T")[0]; // hoje em YYYY-MM-dd
+    const maxDate = new Date().toISOString().split("T")[0];
 
     return (
         <>
@@ -141,17 +145,16 @@ const Trees = () => {
                     <div className="input-field">
                         <FaCalendarAlt className="input-icon" />
                         <input
-                            // Altere o tipo para o estado `dateInputType`
                             type={dateInputType}
-                            placeholder="Data de Plantio" /* Defina o placeholder desejado */
+                            placeholder="dd/mm/aaaa"
                             required
                             id="plantingDate"
                             name="plantingDate"
                             value={values.plantingDate}
                             onChange={handleChange}
                             max={maxDate}
-                            onFocus={handleFocusDate} /* Adicione o onFocus */
-                            onBlur={handleBlurDate}   /* Adicione o onBlur */
+                            onFocus={handleFocusDate}
+                            onBlur={handleBlurDate}
                         />
                     </div>
 
