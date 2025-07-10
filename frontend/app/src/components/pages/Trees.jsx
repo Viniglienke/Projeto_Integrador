@@ -143,15 +143,15 @@ const Trees = () => {
                         <input
                             // Altere o tipo para o estado `dateInputType`
                             type={dateInputType}
-                            placeholder="Data de Plantio" {/* Defina o placeholder desejado */}
+                            placeholder="Data de Plantio" /* Defina o placeholder desejado */
                             required
                             id="plantingDate"
                             name="plantingDate"
                             value={values.plantingDate}
                             onChange={handleChange}
                             max={maxDate}
-                            onFocus={handleFocusDate} {/* Adicione o onFocus */}
-                            onBlur={handleBlurDate}   {/* Adicione o onBlur */}
+                            onFocus={handleFocusDate} /* Adicione o onFocus */
+                            onBlur={handleBlurDate}   /* Adicione o onBlur */
                         />
                     </div>
 
