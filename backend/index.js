@@ -12,30 +12,26 @@ const swaggerUi = require("swagger-ui-express");
 // Configuração do banco de dados PostgreSQL
 const db = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false },
+    ssl: { rejectUnauthorized: false }
 });
 
-// Ajuste no CORS para aceitar a origem da sua aplicação frontend
-app.use(
-    cors({
-        origin: "https://biourb.vercel.app", // seu frontend
-        credentials: true,
-    })
-);
+app.use(cors({
+    origin: "https://biourb.vercel.app",
+    credentials: true
+}));
 app.use(express.json());
 
-// Configuração do Swagger
 const swaggerConfig = {
     swaggerDefinition: {
         openapi: "3.0.0",
         info: {
-            title: "API do Sistema de Controle de Arborização Urbana - BioUrb",
+            title: "API de Cadastro de Árvores",
             version: "1.0.0",
             description: "Documentação da API para autenticação de usuários e gerenciamento de árvores.",
         },
         servers: [
             {
-                url: process.env.API_URL || "http://localhost:3001",
+                url: "https://api-biourb.vercel.app",
             },
         ],
     },
@@ -43,29 +39,15 @@ const swaggerConfig = {
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerConfig);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs, { explorer: true }));
 
-// Middleware do Swagger UI configurado para usar a rota acima para carregar o JSON
-app.use(
-    "/api-docs",
-    swaggerUi.serve,
-    swaggerUi.setup(null, {
-        swaggerUrl: "/api-docs/swagger.json",
-        explorer: true,
-    })
-);
-
-// Rota para servir o JSON da especificação separadamente
-app.get("/api-docs/swagger.json", (req, res) => {
-    res.setHeader("Content-Type", "application/json");
-    res.send(swaggerDocs);
-});
 
 // Conectar ao banco de dados
 db.connect()
     .then(() => console.log("Conexão com o banco de dados bem-sucedida"))
-    .catch((err) => console.error("Erro ao conectar ao banco de dados:", err.message));
+    .catch(err => console.error("Erro ao conectar ao banco de dados:", err.message));
 
-// Rotas (copiadas do seu código original)
+// Rota para registrar usuário
 
 /**
  * @swagger
@@ -100,6 +82,7 @@ db.connect()
  *       400:
  *         description: Email já cadastrado.
  */
+
 app.post("/register", async (req, res) => {
     const { cpf, name, email, password } = req.body;
 
@@ -111,18 +94,18 @@ app.post("/register", async (req, res) => {
 
         const hash = await bcrypt.hash(password, saltRounds);
 
-        await db.query("INSERT INTO usuario (cpf, nome, email, senha) VALUES ($1, $2, $3, $4)", [
-            cpf,
-            name,
-            email,
-            hash,
-        ]);
+        await db.query(
+            "INSERT INTO usuario (cpf, nome, email, senha) VALUES ($1, $2, $3, $4)",
+            [cpf, name, email, hash]
+        );
 
         res.status(201).json({ msg: "Usuário cadastrado com sucesso" });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
+
+// Rota para login
 
 /**
  * @swagger
@@ -153,6 +136,7 @@ app.post("/register", async (req, res) => {
  *       404:
  *         description: Usuário não registrado.
  */
+
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
@@ -169,6 +153,7 @@ app.post("/login", async (req, res) => {
         if (isPasswordValid) {
             const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
+
             res.json({
                 msg: "Usuário logado",
                 user: {
@@ -183,10 +168,13 @@ app.post("/login", async (req, res) => {
             res.status(401).json({ msg: "Senha incorreta" });
         }
     } catch (err) {
-        console.error("Erro no login:", err.message);
+        console.error("Erro no login:", err.message);  // Logando o erro no console
         res.status(500).json({ error: "Erro interno no servidor", details: err.message });
     }
 });
+
+
+// Rota para cadastrar árvore (com base no ID do usuário)
 
 /**
  * @swagger
@@ -225,6 +213,7 @@ app.post("/login", async (req, res) => {
  *       400:
  *         description: Dados incompletos fornecidos.
  */
+
 app.post("/trees", async (req, res) => {
     const { treeName, lifecondition, location, plantingDate, usuario_id } = req.body;
 
@@ -235,15 +224,17 @@ app.post("/trees", async (req, res) => {
     try {
         const result = await db.query(
             `INSERT INTO arvore (nome_cientifico, data_plantio, estado_saude, localizacao, usuario_id)
-       VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+             VALUES ($1, $2, $3, $4, $5) RETURNING id`,
             [treeName, plantingDate, lifecondition, location, usuario_id]
         );
         res.status(201).json({ msg: "Árvore registrada com sucesso!", insertedId: result.rows[0].id });
     } catch (err) {
-        console.error("Erro ao registrar árvore:", err);
+        console.error("Erro ao registrar árvore:", err); // Log de erro
         res.status(500).json({ error: err.message });
     }
 });
+
+// Rota para listar árvores
 
 /**
  * @swagger
@@ -278,25 +269,28 @@ app.post("/trees", async (req, res) => {
  *                   nome_registrante:
  *                     type: string
  */
+
 app.get("/trees", async (req, res) => {
     try {
         const result = await db.query(`
-      SELECT 
-          arvore.id, 
-          arvore.nome_cientifico, 
-          arvore.data_plantio, 
-          arvore.estado_saude, 
-          arvore.localizacao,
-          arvore.usuario_id,
-          usuario.nome AS nome_registrante
-      FROM arvore
-      JOIN usuario ON arvore.usuario_id = usuario.id
-    `);
+            SELECT 
+                arvore.id, 
+                arvore.nome_cientifico, 
+                arvore.data_plantio, 
+                arvore.estado_saude, 
+                arvore.localizacao,
+                arvore.usuario_id,
+                usuario.nome AS nome_registrante
+            FROM arvore
+            JOIN usuario ON arvore.usuario_id = usuario.id
+        `);
         res.json(result.rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
+
+// Atualizar árvore
 
 /**
  * @swagger
@@ -339,6 +333,7 @@ app.get("/trees", async (req, res) => {
  *       400:
  *         description: Campos obrigatórios ausentes.
  */
+
 app.put("/trees/:id", async (req, res) => {
     const { id } = req.params;
     const { treeName, lifecondition, location, plantingDate } = req.body;
@@ -350,8 +345,8 @@ app.put("/trees/:id", async (req, res) => {
     try {
         await db.query(
             `UPDATE arvore
-       SET nome_cientifico = $1, data_plantio = $2, estado_saude = $3, localizacao = $4
-       WHERE id = $5`,
+             SET nome_cientifico = $1, data_plantio = $2, estado_saude = $3, localizacao = $4
+             WHERE id = $5`,
             [treeName, plantingDate, lifecondition, location, id]
         );
 
@@ -360,6 +355,8 @@ app.put("/trees/:id", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+// Deletar árvore
 
 /**
  * @swagger
@@ -379,6 +376,7 @@ app.put("/trees/:id", async (req, res) => {
  *       200:
  *         description: Árvore excluída com sucesso.
  */
+
 app.delete("/trees/:id", async (req, res) => {
     const { id } = req.params;
 
@@ -390,7 +388,7 @@ app.delete("/trees/:id", async (req, res) => {
     }
 });
 
-// Start do servidor
+// Start
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
