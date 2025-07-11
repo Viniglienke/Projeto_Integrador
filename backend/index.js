@@ -40,12 +40,19 @@ const swaggerConfig = {
 
 const swaggerDocs = swaggerJsDoc(swaggerConfig);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs, { explorer: true }));
-    
+
 
 // Conectar ao banco de dados
 db.connect()
     .then(() => console.log("Conexão com o banco de dados bem-sucedida"))
     .catch(err => console.error("Erro ao conectar ao banco de dados:", err.message));
+
+
+app.get("/swagger.json", (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.send(swaggerDocs);
+});
+
 
 // Rota para registrar usuário
 
