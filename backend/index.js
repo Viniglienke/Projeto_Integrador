@@ -16,7 +16,7 @@ const db = new Pool({
 });
 
 app.use(cors({
-    origin: "https://biourb.vercel.app",
+    origin: ["https://biourb.vercel.app", "http://localhost:3001"],
     credentials: true
 }));
 app.use(express.json());
@@ -25,7 +25,7 @@ const swaggerConfig = {
     swaggerDefinition: {
         openapi: "3.0.0",
         info: {
-            title: "API de Cadastro de Árvores",
+            title: "API do Sistema de Controle de Arborização Urbana - BioUrb",
             version: "1.0.0",
             description: "Documentação da API para autenticação de usuários e gerenciamento de árvores.",
         },
