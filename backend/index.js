@@ -6,6 +6,8 @@ const cors = require("cors");
 const bcrypt = require("bcryptjs");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 
 // Configuração do banco de dados PostgreSQL
 const db = new Pool({
@@ -19,12 +21,68 @@ app.use(cors({
 }));
 app.use(express.json());
 
+const swaggerConfig = {
+    swaggerDefinition: {
+        openapi: "3.0.0",
+        info: {
+            title: "API de Cadastro de Árvores",
+            version: "1.0.0",
+            description: "Documentação da API para autenticação de usuários e gerenciamento de árvores.",
+        },
+        servers: [
+            {
+                url: "https://api-biourb.vercel.app",
+            },
+        ],
+    },
+    apis: ["./index.js"],
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerConfig);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs, { explorer: true }));
+    
+
 // Conectar ao banco de dados
 db.connect()
     .then(() => console.log("Conexão com o banco de dados bem-sucedida"))
     .catch(err => console.error("Erro ao conectar ao banco de dados:", err.message));
 
 // Rota para registrar usuário
+
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Registra um novo usuário.
+ *     tags:
+ *       - Autenticação
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - cpf
+ *               - name
+ *               - email
+ *               - password
+ *             properties:
+ *               cpf:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Usuário cadastrado com sucesso.
+ *       400:
+ *         description: Email já cadastrado.
+ */
+
 app.post("/register", async (req, res) => {
     const { cpf, name, email, password } = req.body;
 
@@ -48,6 +106,37 @@ app.post("/register", async (req, res) => {
 });
 
 // Rota para login
+
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Realiza login de um usuário.
+ *     tags:
+ *       - Autenticação
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Usuário logado com sucesso.
+ *       401:
+ *         description: Senha incorreta.
+ *       404:
+ *         description: Usuário não registrado.
+ */
+
 app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
@@ -62,7 +151,6 @@ app.post("/login", async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.senha);
 
         if (isPasswordValid) {
-            const jwt = require("jsonwebtoken");
             const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
 
@@ -87,6 +175,45 @@ app.post("/login", async (req, res) => {
 
 
 // Rota para cadastrar árvore (com base no ID do usuário)
+
+/**
+ * @swagger
+ * /trees:
+ *   post:
+ *     summary: Cadastra uma nova árvore associada a um usuário.
+ *     tags:
+ *       - Árvores
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - treeName
+ *               - lifecondition
+ *               - location
+ *               - plantingDate
+ *               - usuario_id
+ *             properties:
+ *               treeName:
+ *                 type: string
+ *               lifecondition:
+ *                 type: string
+ *               location:
+ *                 type: string
+ *               plantingDate:
+ *                 type: string
+ *                 format: date
+ *               usuario_id:
+ *                 type: integer
+ *     responses:
+ *       201:
+ *         description: Árvore registrada com sucesso.
+ *       400:
+ *         description: Dados incompletos fornecidos.
+ */
+
 app.post("/trees", async (req, res) => {
     const { treeName, lifecondition, location, plantingDate, usuario_id } = req.body;
 
@@ -108,6 +235,41 @@ app.post("/trees", async (req, res) => {
 });
 
 // Rota para listar árvores
+
+/**
+ * @swagger
+ * /trees:
+ *   get:
+ *     summary: Lista todas as árvores cadastradas.
+ *     tags:
+ *       - Árvores
+ *     responses:
+ *       200:
+ *         description: Lista de árvores retornada com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   nome_cientifico:
+ *                     type: string
+ *                   data_plantio:
+ *                     type: string
+ *                     format: date
+ *                   estado_saude:
+ *                     type: string
+ *                   localizacao:
+ *                     type: string
+ *                   usuario_id:
+ *                     type: integer
+ *                   nome_registrante:
+ *                     type: string
+ */
+
 app.get("/trees", async (req, res) => {
     try {
         const result = await db.query(`
@@ -129,6 +291,49 @@ app.get("/trees", async (req, res) => {
 });
 
 // Atualizar árvore
+
+/**
+ * @swagger
+ * /trees/{id}:
+ *   put:
+ *     summary: Atualiza os dados de uma árvore existente.
+ *     tags:
+ *       - Árvores
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID da árvore
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - treeName
+ *               - lifecondition
+ *               - location
+ *               - plantingDate
+ *             properties:
+ *               treeName:
+ *                 type: string
+ *               lifecondition:
+ *                 type: string
+ *               location:
+ *                 type: string
+ *               plantingDate:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       200:
+ *         description: Árvore atualizada com sucesso.
+ *       400:
+ *         description: Campos obrigatórios ausentes.
+ */
+
 app.put("/trees/:id", async (req, res) => {
     const { id } = req.params;
     const { treeName, lifecondition, location, plantingDate } = req.body;
@@ -152,6 +357,26 @@ app.put("/trees/:id", async (req, res) => {
 });
 
 // Deletar árvore
+
+/**
+ * @swagger
+ * /trees/{id}:
+ *   delete:
+ *     summary: Remove uma árvore pelo ID.
+ *     tags:
+ *       - Árvores
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID da árvore
+ *     responses:
+ *       200:
+ *         description: Árvore excluída com sucesso.
+ */
+
 app.delete("/trees/:id", async (req, res) => {
     const { id } = req.params;
 
