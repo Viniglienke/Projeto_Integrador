@@ -1,7 +1,8 @@
 
 <p align="center">
-  <img src="./frontend/app/src/img/logo.jpeg" alt="Logo BioUrb" width="200"/>
+  <img src="./frontend/app/src/img/biourb-banner.png" alt="BioUrb Banner" width="100%"/>
 </p>
+
 
 # 🌳 Sistema de Monitoramento da Arborização Urbana
 
