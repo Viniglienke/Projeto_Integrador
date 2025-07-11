@@ -1,26 +1,23 @@
 # 🌱 BioUrb API – Sistema de Controle de Arborização Urbana
 
-API RESTful para o gerenciamento de usuários e árvores, permitindo cadastro, autenticação e operações CRUD. Desenvolvido com **Node.js**, **Express** e **PostgreSQL**.
-
----
+API RESTful para o gerenciamento de usuários e árvores, permitindo cadastro, autenticação e CRUD de árvores. Desenvolvido com **Node.js**, **Express** e **PostgreSQL**.
 
 ## 🚀 Tecnologias Utilizadas
 
-- 🟩 **Node.js**
-- ⚙️ **Express.js**
-- 🛢️ **PostgreSQL**
-- 🔐 **JWT** (JSON Web Token)
-- 🔒 **bcryptjs** (criptografia de senhas)
-- 🧪 **Swagger** (documentação da API – disponível localmente)
-- ☁️ **Vercel** (deploy backend)
-- ⚙️ **dotenv** (variáveis de ambiente)
+- **Node.js**
+- **Express.js**
+- **PostgreSQL**
+- **JWT** (JSON Web Token)
+- **bcryptjs** (criptografia de senhas)
+- **Swagger** (documentação da API – disponível localmente)
+- **Vercel** (deploy backend)
+- **dotenv** (variáveis de ambiente)
 
 ---
 
 ## 📁 Estrutura do Projeto
 
 ```
-backend/
 ├── index.js               # Arquivo principal da aplicação
 ├── .env                   # Variáveis de ambiente (não versionado)
 ├── package.json           # Dependências e scripts
@@ -32,61 +29,65 @@ backend/
 
 ## 🔧 Instalação e Execução Local
 
-### ✅ Pré-requisitos
+### Pré-requisitos
 
 - Node.js instalado
-- PostgreSQL rodando localmente
-- Banco com tabelas `usuario` e `arvore` criadas
+- PostgreSQL rodando
+- Criar banco com as tabelas `usuario` e `arvore`
 
-### 📝 Passos
+### 1. Clonar o repositório
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/Viniglienke/Projeto_Integrador.git
-   cd ./backend/
-   ```
+```bash
+git clone https://github.com/Viniglienke/Projeto_Integrador.git
+cd .\backend\
+```
 
-2. Instale as dependências:
-   ```bash
-   npm install
-   ```
+### 2. Instalar as dependências
 
-3. Configure o arquivo `.env`:
-   ```env
-   DATABASE_URL=postgresql://usuario:senha@localhost:5432/nomedobanco
-   JWT_SECRET=sua_chave_secreta
-   API_URL=http://localhost:3001
-   ```
+```bash
+npm install
+```
 
-4. Execute o servidor:
-   ```bash
-   node index.js
-   ```
+### 3. Criar o arquivo `.env`
 
-Acesse em: [http://localhost:3001](http://localhost:3001)
+Crie um arquivo `.env` com o seguinte conteúdo:
+
+```env
+DATABASE_URL=postgresql://usuario:senha@localhost:5432/nomedobanco
+JWT_SECRET=sua_chave_secreta
+API_URL=http://localhost:3001
+```
+
+### 4. Rodar o servidor localmente
+
+```bash
+node index.js
+```
+
+O servidor estará rodando em: [http://localhost:3001](http://localhost:3001)
 
 ---
 
 ## 📚 Documentação da API
 
-A documentação via Swagger está disponível **localmente** em:
+A documentação Swagger está disponível **apenas localmente**, em:
 
-🔗 [http://localhost:3001/api-docs](http://localhost:3001/api-docs)
-
-> ⚠️ Não está disponível em produção devido a limitações da Vercel.
+```
+http://localhost:3001/api-docs
+```
 
 ---
 
 ## 🔐 Endpoints Principais
 
-### 🔑 Autenticação
+### Autenticação
 
 | Método | Rota      | Descrição                  |
 |--------|-----------|----------------------------|
 | POST   | /register | Registro de novo usuário   |
 | POST   | /login    | Login e geração de token   |
 
-### 🌳 Árvores
+### Árvores
 
 | Método | Rota          | Descrição                     |
 |--------|---------------|-------------------------------|
@@ -99,15 +100,14 @@ A documentação via Swagger está disponível **localmente** em:
 
 ## 📦 Deploy
 
-A API está em produção na Vercel:
+O backend está em produção na Vercel:  
+🔗 https://api-biourb.vercel.app
 
-🔗 [https://api-biourb.vercel.app](https://api-biourb.vercel.app)
-
-> ⚠️ Swagger não disponível em produção.
+> ⚠️ A documentação Swagger não funciona em produção por limitações da Vercel. Use localmente.
 
 ---
 
-## 🗃️ Estrutura do Banco de Dados (Exemplo)
+## 🗃️ Banco de Dados – Exemplo de Estrutura
 
 ```sql
 CREATE TABLE usuario (
@@ -125,15 +125,10 @@ CREATE TABLE arvore (
     estado_saude VARCHAR(255) NOT NULL,
     localizacao TEXT NOT NULL,
     usuario_id INT NOT NULL,
-    CONSTRAINT fk_arvore_usuario FOREIGN KEY (usuario_id)
-      REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT fk_arvore_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 ```
-
----
 
 ## 👨‍💻 Desenvolvedor
 
 Vinícius • [GitHub](https://github.com/Viniglienke)
-
----
