@@ -1,9 +1,69 @@
-# SISTEMA DE MONITORAMENTO DA ARBORIZAÇÃO URBANA
 
-Autores: Rodrigo Do Nascimento, Vinícius Glienke e Vinícius Kinner.
-
-<p align="justify">
-<strong>Introdução</strong>: A ausência de árvores no espaço urbano pode ocasionar diversos problemas. Entre eles, destaca-se o aumento das temperaturas, tornando as cidades mais quentes e desagradáveis para se viver. Além disso, a falta de árvores contribui para a poluição do ar, resultando em altos níveis de poluentes que afetam a saúde das pessoas. Outro impacto significativo é o ruído, pois a falta de árvores nos grandes centros urbanos pode acarretar em uma poluição sonora excessiva. Esses são apenas alguns problemas que podem estar relacionados com a escassez de árvores e áreas verdes nas cidades. Por isso é crucial abordar essa questão para promover ambientes mais saudáveis, agradáveis e sustentáveis em nossas cidades. <strong>Objetivo</strong>: Apresentar soluções para minimizar os problemas causados pela falta de árvores nas cidades, com ênfase em um sistema interativo que envolva a comunidade. <strong>Metodologia</strong>: Identificação de áreas prioritárias para arborização: avenidas principais, parques e praças, estabelecimento de parcerias com a prefeitura e empresários visando o plantio de árvores e monitoramento geral da arborização urbana. <strong>Resultados</strong>: A implementação das medidas propostas contribuiria para: redução das temperaturas, melhora da qualidade do ar, diminuição do ruído urbano e aumento da qualidade de vida. <strong>Conclusão</strong>: Este sistema interativo é uma ferramenta fundamental para conscientizar a comunidade sobre a importância da arborização urbana, educar sobre os benefícios das árvores e estimular o engajamento na preservação do meio ambiente, além de promover a participação ativa da comunidade, facilitando o registro de problemas relacionados às árvores e incentivando a colaboração na resolução desses problemas.
+<p align="center">
+  <img src="./frontend/app/src/img/logo.jpeg" alt="Logo BioUrb" width="200"/>
 </p>
 
-<strong>Palavras-chave</strong>: Arborização urbana. Áreas verdes. Sustentabilidade. Comunidade. Qualidade de vida.
+# 🌳 Sistema de Monitoramento da Arborização Urbana
+
+> Projeto voltado ao desenvolvimento de uma solução interativa para promover a arborização urbana e o engajamento da comunidade.
+
+---
+
+## 👥 Autores
+
+**Rodrigo Do Nascimento**  
+**Vinícius Glienke**  
+**Vinícius Kinner**
+
+---
+
+## 📝 Introdução
+
+A ausência de árvores no espaço urbano pode ocasionar diversos problemas, como:
+
+- Aumento das temperaturas, tornando as cidades mais quentes e desconfortáveis;
+- Piora da qualidade do ar, elevando os níveis de poluentes que afetam a saúde;
+- Aumento da poluição sonora nos grandes centros urbanos.
+
+Esses fatores destacam a importância de promover ambientes urbanos mais **verdes**, **saudáveis** e **sustentáveis**.
+
+---
+
+## 🎯 Objetivo
+
+Apresentar soluções para minimizar os impactos da escassez de áreas verdes, com ênfase em um sistema interativo que envolva a **participação ativa da comunidade**.
+
+---
+
+## ⚙️ Metodologia
+
+- Identificação de áreas prioritárias para arborização (avenidas, parques e praças);
+- Estabelecimento de parcerias com a prefeitura e empresários para o plantio de árvores;
+- Monitoramento geral da arborização urbana por meio do sistema desenvolvido.
+
+---
+
+## 📈 Resultados Esperados
+
+- Redução das temperaturas locais;
+- Melhoria na qualidade do ar;
+- Diminuição do ruído urbano;
+- Aumento da qualidade de vida nos centros urbanos.
+
+---
+
+## ✅ Conclusão
+
+Este sistema interativo é uma **ferramenta essencial** para:
+
+- Conscientizar sobre a importância da arborização urbana;
+- Educar sobre os benefícios das árvores;
+- Estimular o engajamento coletivo na preservação do meio ambiente;
+- Facilitar o registro e acompanhamento de problemas relacionados às árvores;
+- Promover a **colaboração cidadã** na resolução desses problemas.
+
+---
+
+## 🔑 Palavras-chave
+
+**Arborização urbana**, **Áreas verdes**, **Sustentabilidade**, **Comunidade**, **Qualidade de vida**
