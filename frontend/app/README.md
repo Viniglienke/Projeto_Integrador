@@ -1,139 +1,116 @@
-# 🌱 BioUrb API – Sistema de Controle de Arborização Urbana
+# 🌳 BioUrb - Sistema de Controle de Arborização Urbana (Frontend)
 
-API RESTful para o gerenciamento de usuários e árvores, permitindo cadastro, autenticação e operações CRUD. Desenvolvido com **Node.js**, **Express** e **PostgreSQL**.
+Este é o **frontend** do sistema **BioUrb**, uma aplicação para **monitorar e gerenciar áreas arborizadas urbanas**. Desenvolvido com **React**, inclui autenticação de usuários, cadastro e monitoramento de árvores e um canal de contato.
 
 ---
 
 ## 🚀 Tecnologias Utilizadas
 
-- 🟩 **Node.js**
-- ⚙️ **Express.js**
-- 🛢️ **PostgreSQL**
-- 🔐 **JWT** (JSON Web Token)
-- 🔒 **bcryptjs** (criptografia de senhas)
-- 🧪 **Swagger** (documentação da API – disponível localmente)
-- ☁️ **Vercel** (deploy backend)
-- ⚙️ **dotenv** (variáveis de ambiente)
+- ⚛️ React
+- 🌐 React Router DOM (v6)
+- 🔗 Axios
+- 🎨 React Icons
+- 📢 React Toastify
+- 📩 EmailJS
+- 📆 date-fns
+- 💅 CSS Modules + CSS Puro
 
 ---
 
-## 📁 Estrutura do Projeto
+## ⚙️ Funcionalidades Principais
 
-```
-backend/
-├── index.js               # Arquivo principal da aplicação
-├── .env                   # Variáveis de ambiente (não versionado)
-├── package.json           # Dependências e scripts
-├── vercel.json            # Configuração do Vercel
-└── README.md              # Este arquivo
-```
+- **🔐 Autenticação** com validação de CPF, contexto React e `localStorage`.
+- **🔁 Rotas Públicas e Privadas** com `PrivateRoute`.
+- **🏠 Página Inicial** com visão geral do sistema.
+- **🌲 Cadastro de Árvores** com validações, localização e estado de saúde.
+- **📋 Monitoramento de Árvores** com edição, exclusão e envio de relatório via email.
+- **✉️ Contato** via formulário usando EmailJS.
+- **🧭 Layout Responsivo** com Navbar, Footer e feedback com `react-toastify`.
 
 ---
 
-## 🔧 Instalação e Execução Local
+## 🛠️ Como Configurar e Executar
 
 ### ✅ Pré-requisitos
 
-- Node.js instalado
-- PostgreSQL rodando localmente
-- Banco com tabelas `usuario` e `arvore` criadas
+- Node.js (recomendado v16+)
+- NPM ou Yarn
+- Backend da API BioUrb rodando
 
-### 📝 Passos
+### 📦 Instalação
 
 1. Clone o repositório:
    ```bash
    git clone https://github.com/Viniglienke/Projeto_Integrador.git
-   cd ./backend/
+   cd ./frontend/app/
    ```
 
 2. Instale as dependências:
    ```bash
    npm install
+   # ou
+   yarn install
    ```
 
-3. Configure o arquivo `.env`:
+3. Crie o arquivo `.env`:
    ```env
-   DATABASE_URL=postgresql://usuario:senha@localhost:5432/nomedobanco
-   JWT_SECRET=sua_chave_secreta
-   API_URL=http://localhost:3001
+   REACT_APP_API_URL=http://localhost:3001
    ```
 
-4. Execute o servidor:
+4. Inicie a aplicação:
    ```bash
-   node index.js
+   npm start
+   # ou
+   yarn start
    ```
 
-Acesse em: [http://localhost:3001](http://localhost:3001)
+5. Acesse em: `http://localhost:5173/`
 
 ---
 
-## 📚 Documentação da API
+## ✉️ Configuração do EmailJS
 
-A documentação via Swagger está disponível **localmente** em:
+1. Crie uma conta no [EmailJS](https://www.emailjs.com/).
+2. Substitua os seguintes IDs no código:
 
-🔗 [http://localhost:3001/api-docs](http://localhost:3001/api-docs)
-
-> ⚠️ Não está disponível em produção devido a limitações da Vercel.
-
----
-
-## 🔐 Endpoints Principais
-
-### 🔑 Autenticação
-
-| Método | Rota      | Descrição                  |
-|--------|-----------|----------------------------|
-| POST   | /register | Registro de novo usuário   |
-| POST   | /login    | Login e geração de token   |
-
-### 🌳 Árvores
-
-| Método | Rota          | Descrição                     |
-|--------|---------------|-------------------------------|
-| GET    | /trees        | Listar todas as árvores       |
-| POST   | /trees        | Cadastrar nova árvore         |
-| PUT    | /trees/:id    | Atualizar árvore existente    |
-| DELETE | /trees/:id    | Remover árvore por ID         |
+   - `service_vk5hd8d`
+   - `template_c3yyd5r` (contato)
+   - `template_qviar4b` (relatórios)
+   - `0EZ5fZfY7LfCvIBry` (user ID)
 
 ---
 
-## 📦 Deploy
+## 🧩 Estrutura de Componentes
 
-A API está em produção na Vercel:
+### 🔐 `AuthContext`
 
-🔗 [https://api-biourb.vercel.app](https://api-biourb.vercel.app)
+- Gerencia autenticação, sessão e token.
+- Utiliza `localStorage` e configura headers no Axios.
 
-> ⚠️ Swagger não disponível em produção.
+### 🔒 `PrivateRoute`
 
----
+- Redireciona usuários não autenticados para login.
 
-## 🗃️ Estrutura do Banco de Dados (Exemplo)
+### 🧭 `AppRouter`
 
-```sql
-CREATE TABLE usuario (
-    id SERIAL PRIMARY KEY,
-    cpf VARCHAR(20) UNIQUE NOT NULL,
-    nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    senha VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE arvore (
-    id SERIAL PRIMARY KEY,
-    nome_cientifico VARCHAR(255) NOT NULL,
-    data_plantio DATE NOT NULL,
-    estado_saude VARCHAR(255) NOT NULL,
-    localizacao TEXT NOT NULL,
-    usuario_id INT NOT NULL,
-    CONSTRAINT fk_arvore_usuario FOREIGN KEY (usuario_id)
-      REFERENCES usuario(id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-```
+- Define rotas públicas e privadas.
+- Usa estrutura com `Navbar`, `Container` e `Footer`.
 
 ---
 
-## 👨‍💻 Desenvolvedor
+## 📝 Observações Importantes
 
-Vinícius • [GitHub](https://github.com/Viniglienke)
+- Validação de CPF feita no frontend.
+- Datas formatadas com `date-fns`.
+- Botões de editar/excluir disponíveis apenas ao dono do cadastro ou admin (`id = 1`).
+- Mensagens de sucesso e erro com `react-toastify`.
 
 ---
+
+## 📞 Contato e Suporte
+
+Para dúvidas ou sugestões, utilize o formulário de contato na aplicação ou abra uma **issue** no repositório.
+
+---
+
+**Obrigado por utilizar o BioUrb!** 🌳🌿
