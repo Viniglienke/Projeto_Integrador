@@ -48,12 +48,6 @@ db.connect()
     .catch(err => console.error("Erro ao conectar ao banco de dados:", err.message));
 
 
-app.get("/swagger.json", (req, res) => {
-    res.setHeader("Content-Type", "application/json");
-    res.send(swaggerDocs);
-});
-
-
 // Rota para registrar usuário
 
 /**
