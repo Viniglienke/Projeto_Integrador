@@ -44,12 +44,6 @@ const swaggerConfig = {
 
 const swaggerDocs = swaggerJsDoc(swaggerConfig);
 
-// Rota para servir o JSON da especificação separadamente
-app.get("/api-docs/swagger.json", (req, res) => {
-    res.setHeader("Content-Type", "application/json");
-    res.send(swaggerDocs);
-});
-
 // Middleware do Swagger UI configurado para usar a rota acima para carregar o JSON
 app.use(
     "/api-docs",
@@ -59,6 +53,12 @@ app.use(
         explorer: true,
     })
 );
+
+// Rota para servir o JSON da especificação separadamente
+app.get("/api-docs/swagger.json", (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    res.send(swaggerDocs);
+});
 
 // Conectar ao banco de dados
 db.connect()
