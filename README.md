@@ -1,9 +1,4 @@
 
-<p align="center">
-  <img src="./frontend/app/src/img/biourb-banner.png" alt="BioUrb Banner" width="100%"/>
-</p>
-
-
 # 🌳 Sistema de Monitoramento da Arborização Urbana
 
 > Projeto voltado ao desenvolvimento de uma solução interativa para promover a arborização urbana e o engajamento da comunidade.
