@@ -7,19 +7,24 @@ import "./Login.css";
 
 
 const Login = () => {
+  // Estados para capturar o e-mail e a senha digitados pelo usuário
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  // Pega do contexto as funções de login e o estado de autenticação
   const { signIn, signed } = useContext(AuthContext);
 
+  // Função que será executada ao enviar o formulário
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Evita o reload da página
     const data = {
       email,
       password,
     };
-    await signIn(data);
+    await signIn(data); // Executa a função de login definida no contexto
   };
 
+  // Se o usuário ainda NÃO estiver autenticado, mostra o formulário de login
   if (!signed) {
     return (
       <div className="container">
@@ -55,6 +60,7 @@ const Login = () => {
       </div>
     );
   } else {
+    // Se já estiver autenticado, redireciona para a rota /home
     return <Navigate to="/home" />;
   }
 };

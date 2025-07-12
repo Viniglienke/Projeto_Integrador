@@ -8,20 +8,23 @@ import { useRef } from 'react';
 import { isAfter } from 'date-fns';
 
 const Monitoring = () => {
-    const [showLocationModal, setShowLocationModal] = useState(false);
-    const [selectedLocation, setSelectedLocation] = useState('');
-    const [loadingDeleteId, setLoadingDeleteId] = useState(null);
-    const [showSuccessDelete, setShowSuccessDelete] = useState(false);
-    const [showSuccessEdit, setShowSuccessEdit] = useState(false);
-    const [successMessage, setSuccessMessage] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [showReportModal, setShowReportModal] = useState(false);
-    const [reportTreeId, setReportTreeId] = useState(null);
-    const [reportText, setReportText] = useState("");
-    const user = JSON.parse(localStorage.getItem("@Auth:user"));
-    const [trees, setTrees] = useState([]);
-    const [editing, setEditing] = useState(false);
-    const [currentTree, setCurrentTree] = useState({
+    // Estados para controlar modais, loading e mensagens de sucesso
+    const [showLocationModal, setShowLocationModal] = useState(false); // modal que mostra localização completa
+    const [selectedLocation, setSelectedLocation] = useState(''); // localização selecionada para mostrar no modal
+    const [loadingDeleteId, setLoadingDeleteId] = useState(null); // mostra loading somente para o id da árvore que está sendo deletada
+    const [showSuccessDelete, setShowSuccessDelete] = useState(false); // popup de sucesso ao deletar
+    const [showSuccessEdit, setShowSuccessEdit] = useState(false); // popup de sucesso ao editar
+    const [successMessage, setSuccessMessage] = useState(''); // mensagem geral de sucesso
+    const [loading, setLoading] = useState(false); // loading para enviar relatório por email
+    const [showReportModal, setShowReportModal] = useState(false); // modal para reportar problema
+    const [reportTreeId, setReportTreeId] = useState(null); // id da árvore que está sendo reportada
+    const [reportText, setReportText] = useState(""); // texto do problema reportado
+
+    const user = JSON.parse(localStorage.getItem("@Auth:user")); // usuário logado
+    
+    const [trees, setTrees] = useState([]); // lista das árvores carregadas do backend
+    const [editing, setEditing] = useState(false); // flag para controle de modo edição
+    const [currentTree, setCurrentTree] = useState({ // dados da árvore sendo editada
         id: null,
         nome_registrante: '',
         nome_cientifico: '',
@@ -30,16 +33,19 @@ const Monitoring = () => {
         localizacao: ''
     });
 
+    // Buscar as árvores assim que o componente monta
     useEffect(() => {
         fetchTrees();
     }, []);
 
+    // Ajustar altura da textarea ao entrar em modo edição
     useEffect(() => {
         if (editing) {
-            setTimeout(adjustEditTextareaHeight, 0);
+            setTimeout(adjustEditTextareaHeight, 0); // pequeno delay para garantir que o textarea já esteja no DOM
         }
     }, [editing]);
 
+    // Função para buscar árvores da API
     const fetchTrees = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/trees`);
@@ -49,16 +55,19 @@ const Monitoring = () => {
         }
     };
 
+    // Abre o modal para reportar problema na árvore com o id selecionado
     const handleReportClick = (treeId) => {
         setReportTreeId(treeId);
         setShowReportModal(true);
     };
 
+    // Fecha o modal de reportar problema e limpa o texto
     const handleCloseModal = () => {
         setShowReportModal(false);
         setReportText("");
     };
 
+    // Envia o relatório do problema via email usando emailjs
     const handleSendReport = async () => {
         if (reportText.trim() === '') {
             alert('Descreva o problema antes de enviar.');
@@ -89,9 +98,10 @@ const Monitoring = () => {
             });
     };
 
-
+    // Ativa o modo de edição preenchendo os dados do formulário
     const handleEditClick = (tree) => {
-        const formattedDate = new Date(tree.data_plantio).toISOString().split('T')[0]; // yyyy-mm-dd
+        // Formata a data para yyyy-mm-dd para input type date
+        const formattedDate = new Date(tree.data_plantio).toISOString().split('T')[0];
 
         setEditing(true);
         setCurrentTree({
@@ -104,7 +114,7 @@ const Monitoring = () => {
         });
     };
 
-
+    // Função para deletar árvore pelo id
     const handleDeleteTree = async (id) => {
         try {
             setLoadingDeleteId(id);
@@ -129,17 +139,19 @@ const Monitoring = () => {
         )
     }
 
+    // Ref para o textarea da localização em modo edição para ajustar altura dinamicamente
     const locationEditRef = useRef(null);
 
+    // Ajusta a altura da textarea para evitar scrollbar interno
     const adjustEditTextareaHeight = () => {
         const el = locationEditRef.current;
         if (el) {
-            el.style.height = 'auto';
+            el.style.height = 'auto'; // reset antes de ajustar
             el.style.height = el.scrollHeight + 'px';
         }
     };
 
-
+    // Atualiza o estado dos campos do formulário de edição, ajustando textarea se for localização
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setCurrentTree(prev => ({ ...prev, [name]: value }));
@@ -149,7 +161,7 @@ const Monitoring = () => {
         }
     };
 
-
+    // Submete atualização da árvore, com validação da data para não permitir datas futuras
     const handleUpdateSubmit = async (e) => {
         e.preventDefault();
 
@@ -177,12 +189,7 @@ const Monitoring = () => {
     };
 
 
-    const truncateLocation = (location, maxLength = 25) => {
-        if (!location) return '';
-        return location.length > maxLength ? location.substring(0, maxLength) + '...' : location;
-    };
-
-
+    // Formata data no formato brasileiro DD/MM/YYYY para exibição na tabela
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getUTCDate()).padStart(2, '0'); // Pega o dia UTC
@@ -291,6 +298,7 @@ const Monitoring = () => {
                                 <td>{tree.estado_saude}</td>
                                 <td
                                     onClick={() => {
+                                        // Ao clicar na localização truncada, abre modal com texto completo
                                         if (tree.localizacao.length > 25) {
                                             setSelectedLocation(tree.localizacao);
                                             setShowLocationModal(true);
@@ -320,6 +328,7 @@ const Monitoring = () => {
                                         }}>
                                             {tree.localizacao}
                                         </span>
+                                        {/* Ícone de lupa aparece se texto truncado */}
                                         {tree.localizacao.length > 25 && (
                                             <FaSearch size={12} style={{ color: 'inherit', flexShrink: 0 }} />
                                         )}
@@ -329,6 +338,7 @@ const Monitoring = () => {
 
 
                                 <td>
+                                    {/* Somente usuário dono ou admin (id=1) pode editar/excluir */}
                                     {tree.usuario_id === user.id || user.id === 1 ? (
                                         <>
                                             <button onClick={() => handleEditClick(tree)}>Editar</button>
@@ -339,6 +349,7 @@ const Monitoring = () => {
                                             </button>
                                         </>
                                     ) : (
+                                        /* Usuários sem permissão só podem reportar problemas */
                                         <div className="readonly-actions">
                                             <FaLock title="Você não pode editar ou excluir esta árvore" style={{ color: 'gray', marginRight: '8px' }} />
                                             <button className="report-button" onClick={() => handleReportClick(tree.id)}>Reportar problema</button>
@@ -353,6 +364,7 @@ const Monitoring = () => {
                     </tbody>
                 </table>
             )}
+            {/* Modal para reportar problema */}
             {showReportModal && (
                 <div className="modal-overlay">
                     <div className="modal-content">
@@ -372,6 +384,7 @@ const Monitoring = () => {
                 </div>
             )}
 
+            {/* Popup genérico de sucesso */}
             {successMessage && (
                 <div className="success-overlay">
                     <div className="success-message">
@@ -381,6 +394,7 @@ const Monitoring = () => {
                 </div>
             )}
 
+            {/* Popup de sucesso para exclusão */}
             {showSuccessDelete && (
                 <div className="delete-success-overlay">
                     <div className="delete-success-message">
@@ -391,6 +405,7 @@ const Monitoring = () => {
 
             )}
 
+            {/* Popup de sucesso para edição */}
             {showSuccessEdit && (
                 <div className="action-success-overlay">
                     <div className="action-success-message">
@@ -400,6 +415,7 @@ const Monitoring = () => {
                 </div>
             )}
 
+            {/* Modal que mostra a localização completa */}
             {showLocationModal && (
                 <div className="modal-overlay">
                     <div className="modal-content">

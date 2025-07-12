@@ -6,6 +6,7 @@ import { format, isAfter, parseISO, isValid } from "date-fns";
 import './Trees.css';
 
 const Trees = () => {
+    // Estado que armazena os valores do formulário
     const [values, setValues] = useState({
         usuName: "",
         treeName: "",
@@ -14,13 +15,22 @@ const Trees = () => {
         location: ""
     });
 
+    // Controle da exibição do popup de sucesso
     const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+
+    // Hook para redirecionamento de rotas
     const navigate = useNavigate();
+
+    // Estado que armazena o ID do usuário logado
     const [usuarioId, setUsuarioId] = useState(null);
+
+    // Referência ao campo de localização (textarea)
     const locationRef = useRef(null);
 
+    // Controla o tipo do input da data (para mudar de "text" para "date" ao focar)
     const [dateInputType, setDateInputType] = useState("text");
 
+    // Recupera os dados do usuário autenticado do localStorage ao montar o componente
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("@Auth:user"));
         if (user) {
@@ -32,6 +42,7 @@ const Trees = () => {
         }
     }, []);
 
+    // Ajusta a altura do textarea conforme o texto digitado
     const adjustTextareaHeight = () => {
         const el = locationRef.current;
         if (el) {
@@ -40,31 +51,37 @@ const Trees = () => {
         }
     };
 
+    // Executa o ajuste da altura do textarea ao carregar o componente
     useEffect(() => {
         adjustTextareaHeight();
     }, []);
 
+    // Atualiza o estado com os valores digitados nos campos
     const handleChange = (e) => {
         setValues((prevValues) => ({
             ...prevValues,
             [e.target.name]: e.target.value
         }));
 
+        // Se for o campo localização, ajusta a altura
         if (e.target.name === "location") {
             adjustTextareaHeight();
         }
     };
 
+    // Muda o input da data para "date" ao focar
     const handleFocusDate = () => {
         setDateInputType("date");
     };
 
+    // Volta o input para "text" se o campo estiver vazio ao perder o foco
     const handleBlurDate = () => {
         if (!values.plantingDate) {
             setDateInputType("text");
         }
     };
 
+    // Função executada ao enviar o formulário
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -82,10 +99,10 @@ const Trees = () => {
                 return;
             }
 
+            // Envia os dados para a API
             Axios.post(`${process.env.REACT_APP_API_URL}/trees`, {
                 usuName: values.usuName,
                 treeName: values.treeName,
-                // Garante que a data seja formatada corretamente para o backend
                 plantingDate: format(dataSelecionada, "yyyy-MM-dd"),
                 lifecondition: values.lifecondition,
                 location: values.location,
@@ -102,13 +119,16 @@ const Trees = () => {
         }
     };
 
+    // Fecha o popup de sucesso e redireciona para a tela de monitoramento
     const handleClosePopup = () => {
         setShowSuccessPopup(false);
         navigate("/monitoring");
     };
 
+    // Define o valor máximo permitido para o campo de data (hoje)
     const maxDate = new Date().toISOString().split("T")[0];
 
+    // Retorno visual (JSX)
     return (
         <>
             <div className="container">

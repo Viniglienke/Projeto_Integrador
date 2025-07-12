@@ -15,12 +15,16 @@ const db = new Pool({
     ssl: { rejectUnauthorized: false }
 });
 
+// Configura o CORS permitindo requisições apenas dos domínios especificados
 app.use(cors({
     origin: ["https://biourb.vercel.app", "http://localhost:3001"],
     credentials: true
 }));
+
+// Middleware para interpretar requisições com corpo em JSON
 app.use(express.json());
 
+// Configuração da documentação Swagger
 const swaggerConfig = {
     swaggerDefinition: {
         openapi: "3.0.0",
@@ -31,13 +35,14 @@ const swaggerConfig = {
         },
         servers: [
             {
-                url: "https://api-biourb.vercel.app",
+                url: "https://api-biourb.vercel.app", // URL base da API
             },
         ],
     },
     apis: ["./index.js"],
 };
 
+// Inicializa a documentação com as configurações acima
 const swaggerDocs = swaggerJsDoc(swaggerConfig);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs, { explorer: true }));
 
@@ -87,13 +92,16 @@ app.post("/register", async (req, res) => {
     const { cpf, name, email, password } = req.body;
 
     try {
+        // Verifica se o email já está cadastrado
         const userCheck = await db.query("SELECT * FROM usuario WHERE email = $1", [email]);
         if (userCheck.rows.length > 0) {
             return res.status(400).json({ msg: "Email já cadastrado" });
         }
 
+        // Criptografa a senha
         const hash = await bcrypt.hash(password, saltRounds);
 
+        // Insere o novo usuário no banco
         await db.query(
             "INSERT INTO usuario (cpf, nome, email, senha) VALUES ($1, $2, $3, $4)",
             [cpf, name, email, hash]
@@ -141,6 +149,7 @@ app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        // Verifica se o usuário existe
         const userCheck = await db.query("SELECT * FROM usuario WHERE email = $1", [email]);
 
         if (userCheck.rows.length === 0) {
@@ -148,12 +157,16 @@ app.post("/login", async (req, res) => {
         }
 
         const user = userCheck.rows[0];
+
+        // Compara a senha digitada com o hash do banco
         const isPasswordValid = await bcrypt.compare(password, user.senha);
 
         if (isPasswordValid) {
+            // Gera um token JWT para autenticação futura
             const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
 
+            // Retorna dados do usuário e o token
             res.json({
                 msg: "Usuário logado",
                 user: {
@@ -217,11 +230,13 @@ app.post("/login", async (req, res) => {
 app.post("/trees", async (req, res) => {
     const { treeName, lifecondition, location, plantingDate, usuario_id } = req.body;
 
+    // Validação de campos obrigatórios
     if (!usuario_id || !treeName || !lifecondition || !location || !plantingDate) {
         return res.status(400).json({ msg: "Por favor, forneça todos os campos necessários." });
     }
 
     try {
+        // Insere a nova árvore no banco
         const result = await db.query(
             `INSERT INTO arvore (nome_cientifico, data_plantio, estado_saude, localizacao, usuario_id)
              VALUES ($1, $2, $3, $4, $5) RETURNING id`,
@@ -338,11 +353,13 @@ app.put("/trees/:id", async (req, res) => {
     const { id } = req.params;
     const { treeName, lifecondition, location, plantingDate } = req.body;
 
+    // Verifica se todos os campos foram enviados
     if (!treeName || !lifecondition || !location || !plantingDate) {
         return res.status(400).json({ msg: "Todos os campos são obrigatórios." });
     }
 
     try {
+        // Atualiza os dados da árvore no banco
         await db.query(
             `UPDATE arvore
              SET nome_cientifico = $1, data_plantio = $2, estado_saude = $3, localizacao = $4
@@ -388,7 +405,7 @@ app.delete("/trees/:id", async (req, res) => {
     }
 });
 
-// Start
+// Inicialização do servidor
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

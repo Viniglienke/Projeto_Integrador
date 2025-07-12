@@ -3,28 +3,35 @@ import './Contact.css';
 import emailjs from '@emailjs/browser';
 
 const Contact = () => {
+  // Estados para armazenar os valores do formulário
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
 
+  // Função executada ao enviar o formulário
   const sendEmail = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Evita o comportamento padrão de recarregar a página
     
+    // Verificação simples: todos os campos devem estar preenchidos
     if(name === '' || email === '' || message === ''){
       alert("Preencha todos os campos!");
       return;
     }
 
+    // Parâmetros que serão passados ao template do EmailJS
     const templateParams = {
       from_name: name,
       message: message,
       email: email
     }
 
+    // Envia o email utilizando os parâmetros e identificadores do serviço e template
     emailjs.send("service_vk5hd8d", "template_c3yyd5r", templateParams, "0EZ5fZfY7LfCvIBry")
     .then((response) => {
       console.log("EMAIL ENVIADO", response.status, response.text)
       alert("Mensagem enviada!")
+
+      // Limpa os campos do formulário após o envio bem-sucedido
       setName('')
       setEmail('')
       setMessage('')
@@ -35,6 +42,7 @@ const Contact = () => {
 
   };
 
+// JSX retornado pelo componente
   return (
     <div className="contact-container">
       <header className="contact-header">
