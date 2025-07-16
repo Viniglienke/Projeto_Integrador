@@ -252,7 +252,7 @@ const Monitoring = () => {
                         </div>
                         <div className="input-field">
                             <FaMapMarkerAlt className="input-icon" style={{
-                                position: 'absolute', top: '40%', left: '10px', transform: 'translateY(-40%)', color: '#555'
+                                position: 'absolute', top: '20px', left: '10px', color: '#555'
                             }}
                             />
                             <textarea

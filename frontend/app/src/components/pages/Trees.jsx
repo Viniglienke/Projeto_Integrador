@@ -196,7 +196,9 @@ const Trees = () => {
 
                     <div className="input-field">
                         <FaMapMarkerAlt
-                            className="input-icon"
+                            className="input-icon " style={{
+                                position: 'absolute', top: '20px', left: '10px', color: '#555'
+                            }}
                         />
                         <textarea
                             id="location"

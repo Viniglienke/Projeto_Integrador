@@ -39,6 +39,18 @@
 
 .input-field textarea {
   min-height: 40px;
+  overflow: hidden !important;
+  resize: none !important;
+  padding: 10px 15px 10px 40px;
+  font-size: 16px;
+  line-height: 1.4;
+  color: #155802;
+  border: 1px solid #000000;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: white;
+  transition: height 0.2s ease;
 }
 
 .input-field select {
@@ -98,6 +110,17 @@ button[type="submit"]:hover {
   button[type="submit"] {
     font-size: 14px;
     padding: 6px 12px;
+  }
+
+  .input-field textarea {
+    font-size: 14px;
+    padding: 10px 10px 10px 38px;
+    line-height: 1.4;
+  }
+
+  .input-icon {
+    font-size: 18px;
+    left: 8px;
   }
 }
 
@@ -164,15 +187,6 @@ button[type="submit"]:hover {
   width: 100%;
 }
 
-.input-icon {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  color: #177214;
-  font-size: 20px;
-}
-
 .input-field input[type="text"],
 .input-field input[type="email"],
 .input-field input[type="password"],
@@ -183,10 +197,4 @@ button[type="submit"]:hover {
 
 .input-field textarea::placeholder {
   color: #155802;
-}
-
-.input-field textarea {
-  overflow: hidden;
-  resize: none;
-  transition: height 0.2s ease;
 }
