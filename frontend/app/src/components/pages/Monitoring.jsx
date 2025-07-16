@@ -388,7 +388,7 @@ const Monitoring = () => {
             {successMessage && (
                 <div className="success-overlay">
                     <div className="success-message">
-                        <h2>✅ {successMessage}</h2>
+                        <h2>{successMessage}</h2>
                         <button onClick={() => setSuccessMessage('')}>Fechar</button>
                     </div>
                 </div>
